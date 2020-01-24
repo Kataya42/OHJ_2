@@ -11,7 +11,7 @@ int main()
   double cel =( temp - 32) / 1.8;
 
 
-  std::cout << faren << std::endl;;
-  std::cout << cel << std::endl;
+  std::cout << temp << " degrees Celsius is "<< faren <<" degrees Farenheit" << std::endl;;
+std::cout << temp << " degrees Farenheit is "<< cel <<" degrees Celsius" << std::endl;;
     return 0;
 }

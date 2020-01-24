@@ -4,9 +4,14 @@ using namespace std;
 
 int main()
 {
-    cout << "Enter a temperature: ";
+  int temp = 0;
+  std::cout << "Enter a temperature: ";
+  std::cin >> temp;
+  double faren = temp * 1.8 + 32;
+  double cel =( temp - 32) / 1.8;
 
-    // Write your code here
 
+  std::cout << faren << std::endl;;
+  std::cout << cel << std::endl;
     return 0;
 }

@@ -10,8 +10,10 @@ int main()
     int age = 0;
     std::cout << "Enter your age: ";
     std::cin >> age;
+    int new_age = 1 + age;
 
     std::cout << "Pleased to meet you, " << name << "!" << std::endl;
-
+    std::cout << "In your next birthday you'll be " << new_age << " years old!" << std::endl;
+  
     return EXIT_SUCCESS;
 }

@@ -1,12 +1,20 @@
 #include <iostream>
 using namespace std;
-// Write here a function counting the mean value
+
+
+void mean(float sum, float count) {
+    float mean = 0;
+    mean = sum / count;
+    cout << "Mean value of the given numbers is " << mean << endl;
+
+}
 
 int main()
 {
   int count = 0;
   int number = 0;
-  float measurement = 0;
+  int measurement = 0;
+  int sum = 0;
     cout << "From how many integer numbers you want to count the mean value? ";
     cin >> count;
     if ( count < 1 ){
@@ -16,6 +24,8 @@ int main()
 	number += 1;
 	cout << "Input " << number << ". number: ";
 	cin >> measurement;
+	sum = sum + measurement;
       }
+      mean(sum, count);
     }
 }

@@ -19,5 +19,5 @@ int main()
 	cout << "The cube of " << number << " is not " << cube << "." << endl;
       }
     }
-
+    return 0;
 }

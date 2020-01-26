@@ -12,8 +12,8 @@ int main()
       cout << "Error!" << endl;
     } else {
       int cube = number * number * number;
-      int test = cube / number / number;
-      if (test == number){
+      int checker = cube / number / number;
+      if (checker == number){
 	 cout << "The cube of " << number << " is " << cube << "." << endl;
       } else {
 	cout << "The cube of " << number << " is not " << cube << "." << endl;

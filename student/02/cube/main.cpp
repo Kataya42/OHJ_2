@@ -8,9 +8,11 @@ int main()
   int number = 0;
     cout << "Enter a number: ";
     cin >> number;
-    if (number < 1 ){
+    if (number < 0 ){
       cout << "Error!" << endl;
-    } else {
+    } else if(number == 0){
+        cout << "The cube of 0 is 0." << endl;
+    }else {
       int cube = number * number * number;
       int test = cube / number / number;
       if (test == number){

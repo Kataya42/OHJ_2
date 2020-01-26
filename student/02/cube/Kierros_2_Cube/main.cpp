@@ -14,10 +14,10 @@ int main()
       int cube = number * number * number;
       int test = cube / number / number;
       if (test == number){
-	 cout << "The cube of " << number << " is " << cube << "." << endl;
+     cout << "The cube of " << number << " is " << cube << "." << endl;
       } else {
-	cout << "The cube of " << number << " is not " << cube << "." << endl;
+    cout << "The cube of " << number << " is not " << cube << "." << endl;
       }
-    }    
+    }
     return 0;
 }

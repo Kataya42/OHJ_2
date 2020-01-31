@@ -1,5 +1,10 @@
 #include "swap.hh"
 
-// TODO: Implement swap function here
+extern int i;
+extern int j;
 
-
+void swap(int& i, int& j){
+    int temp = i;
+    i = j;
+    j = temp;
+}

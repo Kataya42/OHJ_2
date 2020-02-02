@@ -15,14 +15,15 @@ int Player::get_points(){
 }
 void Player::add_points(int pts){
     points_ += pts;
+
+    if ( points_ > 50){
+        cout << name_<< " gets penalty points!" << endl;
+        points_ = 25;
+    }
 }
 int Player::has_won(){
     if (points_ == 50){
         return 1;
-    } else if(points_ > 50){
-        cout << name_<< " gets penalty points!" << endl;
-        points_ = 25;
-        return 0;
     } else {
         return 0;
     }

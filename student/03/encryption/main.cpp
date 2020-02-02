@@ -1,48 +1,49 @@
 #include <iostream>
-#include <cstring>
-#include <cctype>
 #include <string>
+#include <algorithm>
 
 using namespace std;
+
 
 int main()
 {
 
     string key;
-    string text;
-
-    cout << "Enter the encryption key: ";
-    cin >> key;
+    string text = "aapelix";
+    string def = "abcdefghijklmnopqrstuvwzyx";
+    key = "xbcdefghijklmnopqrstuvwzya";
+    //cout << "Enter the encryption key: ";
+    //cin >> key;
 
     if (key.length() != 26){
         cout << "Error! The encryption key must contain 26 characters." << endl;
+        return EXIT_FAILURE;
         }
-    cout << endl;
+
     for( char& i : key){
         if (isupper(i)){
-            cout << "Error! The encryption key must contain only lower case characters.";
+            cout << "Error! The encryption key must contain only lower case characters." << endl;
+            return EXIT_FAILURE;
       }}
-    cout << endl;
+
 
     for( char letter = 'a'; letter < 'z'; ++letter ){
         string::size_type test = key.find(letter);
         if (test == string::npos){
             cout << "Error! The encryption key must contain all alphabets a-z." << endl;
-        } else {
-            cout << "yup" << endl;
-        }
+            return EXIT_FAILURE;
+            }
 
     }
-    cout << endl;
+   //cout << "Enter the text to be encrypted: ";
+   // cin >> text;
 
+    for( char& i : text ){
+        string::size_type found = def.find(i);
+        cout << found << endl;
 
-
- //     else if (){
- //       cout << "Error! The encryption key must contain only lower case characters." << endl;
- //
- //   }
-    cout << "Enter the text to be encrypted: ";
-    cin >> text;
+        //text.replace(found, found + 1, "x");
+    }
 
 
     cout << "Encrypted text: " <<key << " " << text << endl;

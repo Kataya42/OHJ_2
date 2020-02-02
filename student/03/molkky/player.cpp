@@ -5,8 +5,9 @@
 using namespace std;
 
 Player::Player(string name):
-    name_(name){
+    name_(name), points_(0){
 }
+
 string Player::get_name() const{
     return name_;
 }
@@ -23,10 +24,10 @@ int Player::get_points(){
     return points_;
 }
 
-int Player::has_won(){
+bool Player::has_won(){
     if (points_ == 50){
-        return 1;
+        return true;
     } else {
-        return 0;
+        return false;
     }
 }

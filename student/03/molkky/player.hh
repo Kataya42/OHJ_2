@@ -9,8 +9,8 @@ class Player {
         Player(string name);
         string get_name() const;
         int get_points();
-        void add_points(int points);
-        bool has_won();
+        void add_points(int pts);
+        int has_won();
    private:
         string name_;
         int points_;

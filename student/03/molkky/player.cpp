@@ -16,7 +16,7 @@ int Player::get_points(){
 void Player::add_points(int pts){
     points_ += pts;
 }
-bool Player::has_won(){
+int Player::has_won(){
     if (points_ == 50){
         return 1;
     } else if(points_ > 50){

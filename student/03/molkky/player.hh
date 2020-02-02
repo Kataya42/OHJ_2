@@ -8,8 +8,8 @@ class Player {
   public:
         Player(string name);
         string get_name() const;
-        int get_points();
         void add_points(int pts);
+        int get_points();
         int has_won();
    private:
         string name_;

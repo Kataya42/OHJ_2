@@ -6,7 +6,20 @@ using namespace std;
 
 void produce_random_numbers(unsigned int lower, unsigned int upper)
 {
-    // Implement your function here
+    string check = "";
+    int truth = 0;
+    while (truth == 0){
+        cout << endl;
+        int num = rand() % (upper-lower) + upper;
+        cout << "Your drawn random number is " << num << endl;
+        cout << "Press enter to continue or q to quit: ";
+        check = cin.get();
+        if (check == "q"){
+            truth = 1;
+        } else if (check == "\n"){
+            truth = 0;
+        }
+    }
 }
 
 int main()

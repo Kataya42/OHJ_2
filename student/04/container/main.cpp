@@ -35,7 +35,7 @@ bool is_ordered_non_strict_ascending(std::vector<int>vec){
 bool is_arithmetic_series(std::vector<int>vec){
     int test = vec.at(1) - vec.at(0);
     int truth = 0;
-    for (int i=0 ; i < vec.size(); i++){
+    for (unsigned long int i=0 ; i < vec.size(); i++){
         if (i != 0){
             if(vec.at(i) - vec.at(i-1) != test){
                 truth = 1;
@@ -53,7 +53,7 @@ bool is_arithmetic_series(std::vector<int>vec){
 bool is_geometric_series(std::vector<int>vec){
     double test = vec.at(0) / vec.at(1);
     int truth = 0;
-    for (int i=0 ; i < vec.size(); i++){
+    for (unsigned long int i=0 ; i < vec.size(); i++){
         if (i != 0){
             if(vec.at(i-1) / vec.at(i) != test){
                 truth = 1;

@@ -26,7 +26,7 @@ std::vector<std::string> split(std::string line, char sep, bool a =false){
         char test = 0;
         for (char& c : line){
 
-            if (c == sep and test != sep){
+            if (c == sep and test != sep and test != 0){
                 result.push_back(temp);
                 temp = "";
             } else if (c == sep){

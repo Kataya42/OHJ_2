@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <vector>
+#include <algorithm>
 
 
 void read_integers(std::vector< int >& ints, int count)
@@ -9,12 +10,62 @@ void read_integers(std::vector< int >& ints, int count)
     for(int i = 0; i < count; ++i)
     {
         std::cin >> new_integer;
-        // TODO: Implement your solution here
+        ints.push_back(new_integer);
     }
 }
 
-// TODO: Implement your solution here
+bool same_values(std::vector<int>vec){
+    if (std::equal(vec.begin() + 1, vec.end(), vec.begin())){
+        return true;
+    } else {
+        return false;
+    }
 
+}
+
+bool is_ordered_non_strict_ascending(std::vector<int>vec){
+    if (std::is_sorted(vec.begin(),vec.end())){
+        return true;
+    } else {
+        return false;
+    }
+
+}
+
+bool is_arithmetic_series(std::vector<int>vec){
+    int test = vec.at(1) - vec.at(0);
+    int truth = 0;
+    for (int i=0 ; i < vec.size(); i++){
+        if (i != 0){
+            if(vec.at(i) - vec.at(i-1) != test){
+                truth = 1;
+            }
+        }
+    }
+    if(truth == 0){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
+bool is_geometric_series(std::vector<int>vec){
+    double test = vec.at(0) / vec.at(1);
+    int truth = 0;
+    for (int i=0 ; i < vec.size(); i++){
+        if (i != 0){
+            if(vec.at(i-1) / vec.at(i) != test){
+                truth = 1;
+            }
+        }
+    }
+    if(truth == 0){
+        return true;
+    } else {
+        return false;
+    }
+}
 
 int main()
 {

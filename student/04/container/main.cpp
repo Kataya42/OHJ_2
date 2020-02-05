@@ -51,11 +51,18 @@ bool is_arithmetic_series(std::vector<int>vec){
 
 
 bool is_geometric_series(std::vector<int>vec){
-    double test = vec.at(0) / vec.at(1);
+    for (int i : vec){
+        if (i == 0){
+            return false;
+        }
+    }
+    int first = vec.at(0);
+    int second = vec.at(1);
+    float test = (float)first / (float)second;
     int truth = 0;
     for (unsigned long int i=0 ; i < vec.size(); i++){
         if (i != 0){
-            if(vec.at(i-1) / vec.at(i) != test){
+            if((float)vec.at(i-1) / (float)vec.at(i) != test){
                 truth = 1;
             }
         }

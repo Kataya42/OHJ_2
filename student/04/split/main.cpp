@@ -2,9 +2,25 @@
 #include <string>
 #include <vector>
 
+using namespace std;
 
-// TODO: Implement split function here
-// Do not change main function
+vector<string> split(string line, char sep, bool a =false){
+
+    if (a == false){
+        string temp = "";
+        vector<string> result;
+
+        for (char i : line){
+            result.push_back(""+i);
+        }
+        return result;
+    } else {
+        string temp2 = "";
+        vector<string> result;
+        result.push_back(""+sep);
+        return result;
+        }
+}
 
 
 int main()

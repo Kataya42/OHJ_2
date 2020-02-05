@@ -6,14 +6,27 @@ using namespace std;
 
 void produce_random_numbers(unsigned int lower, unsigned int upper)
 {
+    default_random_engine rand_gen;
+
+    string seed_value = "";
     string check = "";
     int truth = 0;
+    cout << "Enter a seed value or an empty line: ";
+    getline (cin, seed_value);
+    if (seed_value == ""){
+        rand_gen.seed(time(NULL));
+    } else {
+        rand_gen.seed(stoi(seed_value));
+    }
+
+    uniform_int_distribution<int> dist(lower, upper);
+
     while (truth == 0){
         cout << endl;
-        int num = rand() % (upper-lower) + upper;
+        int num = dist(rand_gen);
         cout << "Your drawn random number is " << num << endl;
         cout << "Press enter to continue or q to quit: ";
-        check = cin.get();
+        getline (cin, check);
         if (check == "q"){
             truth = 1;
         } else if (check == "\n"){

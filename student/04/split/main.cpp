@@ -23,15 +23,18 @@ std::vector<std::string> split(std::string line, char sep, bool a =false){
     } else {
         std::string temp = "";
         std::vector<std::string> result;
-
+        char test = 0;
         for (char& c : line){
 
-            if (c == sep){
+            if (c == sep and test != sep){
                 result.push_back(temp);
                 temp = "";
+            } else if (c == sep){
+
             } else {
                 temp += c;
             }
+            test = c;
 
         }
         result.push_back(temp);

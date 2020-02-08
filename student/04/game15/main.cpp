@@ -23,6 +23,7 @@
 #include <iostream>
 #include <string>
 #include <limits>
+#include <algorithm>
 
 // More functions
 void init_board(Board game)
@@ -31,17 +32,30 @@ void init_board(Board game)
     game.print();
 }
 
-void read_integers(std::vector< unsigned int >& custom)
+bool read_integers(std::vector< unsigned int >& custom)
 {
     int new_integer = 0;
-
+    std::vector<int> missing_ints;
     for(int i = 0; i < 16; ++i)
     {
         std::cin >> new_integer;
         custom.push_back(new_integer);
+        }
+    for (int i=1; i < 16; ++i){
+        if (not (std::count(custom.begin(), custom.end(), i))){
+            missing_ints.push_back(i);
+      }
     }
-    std::cin.clear();
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    if (missing_ints.size()!= 0){
+        std::cout << "Number " << (missing_ints[0]) << " is missing" << std::endl;
+        return false;
+    } else {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        return true;
+    }
+
+
 }
 
 void gameplay(Board game)
@@ -58,26 +72,44 @@ void gameplay(Board game)
                 }
 
         }
-        //std::getline(std::cin, order);
-        game.action(dir, num);
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+        if (not (dir == 'w' || dir == 'a' || dir == 's' || dir == 'd')){
+            std::cout << "Unknown command: " << dir << std::endl;
+        } else if (num < 0 || num > 15){
+            std::cout << "invalid number: " << num << std::endl;
+
+        } else {
+            game.action(dir, num);
+        }
+
+
         game.print();
     }
+
 }
 
 int main()
 {
     std::string ans;
     std::vector<unsigned int> init_state;
-    std::cout << "Random initialization (y/n): ";
-    std::getline(std::cin, ans);
 
-    if (ans == "n")  {
-        std::cout <<"Enter the numbers 1-16 in a desired order (16 means empty): " << std::endl;
-        read_integers(init_state);
-    } else if ( ans == "y") {
-        init_state= {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16};
-    }
+    while (not (ans == "n" or ans == "y") ){
+        std::cout << "Random initialization (y/n): ";
+        std::getline(std::cin, ans);
 
+        if (ans == "n")  {
+            std::cout <<"Enter the numbers 1-16 in a desired order (16 means empty): " << std::endl;
+            if ( not (read_integers(init_state))){
+                 return EXIT_FAILURE;
+        }
+        } else if ( ans == "y") {
+            init_state= {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16};
+        } else {
+            std::cout << "Unknown choice: " << ans << std::endl;
+        }
+}
     Board game = Board((ans=="y"), init_state);
     init_board(game);
     gameplay(game);

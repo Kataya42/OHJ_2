@@ -79,7 +79,7 @@ void Board::print() {
 
 void Board::is_solvable()
 {
-    std::cout << "Game is solvable: Go ahead!" << std::endl;
+    std::cout << "Game is solvable: Go ahead! :) " << std::endl;
 }
 
 
@@ -88,8 +88,6 @@ void Board::action(char com,  unsigned int num)
     int I = -1;
     int J = -1;
 
-
-    //unsigned int  num = 5;
     for (unsigned int i=0; i < 4; i++) {
         for (unsigned int j=0; j < 4; j++) {
             if (grid_[i][j]==num) {
@@ -99,7 +97,7 @@ void Board::action(char com,  unsigned int num)
         }
     }
     if (I == -1 || J == -1){
-        std::cout << "Fuuuck" << std::endl;
+        std::cout << "REEEE" << std::endl;
     } else {
         if (com == 'w' && I > 0 && grid_[I-1][J] == 16) {
 
@@ -122,14 +120,24 @@ void Board::action(char com,  unsigned int num)
             grid_[I][J] = 16;
 
         } else {
-            std::cout << "no" << std::endl;
+            std::cout << "impossible move " << com << std::endl;
         }
     }
 }
 
 bool Board::victory()
 {
-    return true;
+
+    if (grid_[0][0] < grid_[0][1] && grid_[0][2] < grid_[0][3] && grid_ [1][0] <
+        grid_[1][1] && grid_[1][2] < grid_[1][3] && grid_[2][0] <
+        grid_[2][1] && grid_[2][2] < grid_[2][3] && grid_[2][3] <
+        grid_[3][0] && grid_[3][1] < grid_[3][3] && grid_[3][2] < grid_[3][3]){
+        std::cout << "You won!" << std::endl;
+        return false;
+    } else {
+        return true;
+    }
+
 }
 
 void Board::my_shuffle(std::vector<unsigned int> &numbers, int seed)

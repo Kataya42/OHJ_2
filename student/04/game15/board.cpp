@@ -16,16 +16,32 @@
 #include <iostream>
 #include <iomanip>
 #include <random>
+#include <vector>
 
 const int EMPTY = 16;
 const unsigned int PRINT_WIDTH = 5;
 
-Board::Board(bool test):
-    test_(test){
-
+Board::Board(bool shuffle):
+    shuffle_(shuffle){
+    if (not shuffle){
+        normal_init();
+    } //(else {
+      //  my_shuffle();
+      //}
 }
 
+void Board::normal_init()
+{
 
+    for (int i = 0; i < 4; i++) {
+        std::vector<unsigned int> row;
+        for (int j = 0; j < 4; j++) {
+            row.push_back(i * j);
+        }
+        grid_.push_back(row);
+
+    }
+}
 
 
 void Board::print()
@@ -60,6 +76,7 @@ void Board::my_shuffle(std::vector<unsigned int> &numbers, int seed)
         unsigned int temp = numbers.at(i);
         numbers.at(i) = numbers.at(random_index);
         numbers.at(random_index) = temp;
+
     }
 }
 

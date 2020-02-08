@@ -42,8 +42,9 @@ int main()
     } else if ( ans == "n"){
         std::cout <<"nayy lmao" << std::endl;
         Board game = Board(false);
+        init_board(game);
     }
-    void init_board(Board game);
+
 
     return EXIT_SUCCESS;
 }

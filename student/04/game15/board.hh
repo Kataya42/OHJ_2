@@ -3,11 +3,11 @@
  * Class: Board
  *  Describes a two-dimensional grid for puzzle 15 with necessary functions.
  *
- * Program author ( Fill with your own info )
- * Name: Teemu Teekkari
- * Student number: 123456
- * UserID: teekkart ( Necessary due to gitlab folder naming. )
- * E-Mail: teemu.teekkari@tuni.fi
+ * Program author:
+ * Name: Aleksi Rissa
+ * Student number: 292053
+ * UserID: xfalri
+ * E-Mail: aleksi.rissa@tuni.fi
  *
  * Notes:
  *
@@ -28,6 +28,7 @@ public:
     // 2. Implement two constructors, one for each initialization way
 
     // Prints the game grid
+    Board(bool test);
     void print();
 
     // More methods
@@ -38,7 +39,7 @@ private:
 
     // Game grid for the 15 puzzle
     std::vector<std::vector<unsigned int>> grid_;
-
+    bool test_;
     // More attributes/methods
 };
 

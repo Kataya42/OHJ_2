@@ -2,11 +2,11 @@
  *
  * Class: Board
  *
- * Program author ( Fill with your own info )
- * Name: Teemu Teekkari
- * Student number: 123456
- * UserID: teekkart ( Necessary due to gitlab folder naming. )
- * E-Mail: teemu.teekkari@tuni.fi
+ * Program author:
+ * Name: Aleksi Rissa
+ * Student number: 292053
+ * UserID: xfalri
+ * E-Mail: aleksi.rissa@tuni.fi
  *
  * Notes:
  *
@@ -15,9 +15,18 @@
 #include "board.hh"
 #include <iostream>
 #include <iomanip>
+#include <random>
 
 const int EMPTY = 16;
 const unsigned int PRINT_WIDTH = 5;
+
+Board::Board(bool test):
+    test_(test){
+
+}
+
+
+
 
 void Board::print()
 {

@@ -9,23 +9,41 @@
  * Empty space is represented by the number 16 in the code (constant EMPTY)
  * and by dot when printing the game board.
  *
- * Program author ( Fill with your own info )
- * Name: Teemu Teekkari
- * Student number: 123456
- * UserID: teekkart ( Necessary due to gitlab folder naming. )
- * E-Mail: teemu.teekkari@tuni.fi
+ * Program author:
+ * Name: Aleksi Rissa
+ * Student number: 292053
+ * UserID: xfalri
+ * E-Mail: aleksi.rissa@tuni.fi
  *
  * Notes about the program and it's implementation:
  *
  * */
 
 #include "board.hh"
+#include <iostream>
+
 
 // More functions
+void init_board(Board game)
+{
+    game.print();
+
+}
 
 int main()
 {
-    // More functionality
+    std::string ans;
+    std::cout << "Random initialization (y/n): ";
+    std::cin >> ans;
+
+    if ( ans == "y"){
+        std::cout << "ayy lmao" << std::endl;
+        Board game = Board(true);
+    } else if ( ans == "n"){
+        std::cout <<"nayy lmao" << std::endl;
+        Board game = Board(false);
+    }
+    void init_board(Board game);
 
     return EXIT_SUCCESS;
 }

@@ -17,27 +17,29 @@
 #include <iomanip>
 #include <random>
 #include <vector>
+#include <string>
 
 const int EMPTY = 16;
 const unsigned int PRINT_WIDTH = 5;
 
-Board::Board(bool shuffle, std::vector<unsigned int> inputs):
+Board::Board(bool shuffle, std::vector<unsigned int> numbers):
     shuffle_(shuffle){
-    if (not shuffle){
-        normal_init(inputs);
-    } //(else {
-      //  my_shuffle();
-      //}
+    if (shuffle){
+        // int seed = get_seed();
+        my_shuffle(numbers, 3);
+    } else {
+        initialize(numbers);
+      }
 }
 
-void Board::normal_init(std::vector<unsigned int> input)
+void Board::initialize(std::vector<unsigned int> numbers)
 {
     int temp = 0;
 
     for (int i = 0; i < 4; i++) {
         std::vector<unsigned int> row;
         for (int j = 0; j < 4; j++) {
-            unsigned count = input.at(temp);
+            unsigned count = numbers.at(temp);
             row.push_back(count);
             temp += 1;
         }
@@ -46,7 +48,18 @@ void Board::normal_init(std::vector<unsigned int> input)
     }
 }
 
-
+int Board::get_seed()
+{
+    std::string seed = "";
+    std::cout << "Enter a seed value or an empty line: ";
+    std::getline(std::cin, seed);
+    std::cout << seed;
+    if (seed == ""){
+        return time(NULL);
+    } else {
+        return stoi(seed);
+    }
+}
 void Board::print()
 {
     for(unsigned int x = 0; x < SIZE; ++x)
@@ -84,7 +97,9 @@ void Board::my_shuffle(std::vector<unsigned int> &numbers, int seed)
         unsigned int temp = numbers.at(i);
         numbers.at(i) = numbers.at(random_index);
         numbers.at(random_index) = temp;
-
     }
+    initialize(numbers);
+
+
 }
 

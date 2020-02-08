@@ -21,6 +21,7 @@
 
 #include "board.hh"
 #include <iostream>
+#include <string>
 
 
 // More functions
@@ -41,18 +42,24 @@ void read_integers(std::vector< unsigned int >& custom)
 }
 
 
+
 int main()
 {
+
     std::string ans;
     std::vector<unsigned int> custom;
-
+    std::vector<unsigned int> basic = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16};
+    int seed;
     std::cout << "Random initialization (y/n): ";
     std::cin >> ans;
 
-    if ( ans == "y"){
-        std::cout << "ayy lmao" << std::endl;
-        Board game = Board(true, custom);
-    } else if ( ans == "n"){
+    if ( ans == "y")
+    {
+        Board game = Board(true, basic);
+        init_board(game);
+
+    } else if ( ans == "n")
+    {
         std::cout <<"Enter the numbers 1-16 in a desired order (16 means empty): " << std::endl;
         read_integers(custom);
         Board game = Board(false, custom);

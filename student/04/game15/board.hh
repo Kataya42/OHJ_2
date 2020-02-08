@@ -42,9 +42,8 @@ private:
     std::vector<std::vector<unsigned int>> grid_;
 
     // initializes the board
-    void normal_init(std::vector<unsigned int>);
-
-
+    void initialize(std::vector<unsigned int>);
+    int get_seed();
     void my_custom(std::vector<unsigned int>);
 
     // is board initialized with shuffle or manually

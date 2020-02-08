@@ -16,6 +16,7 @@
 #ifndef BOARD_HH
 #define BOARD_HH
 #include <vector>
+#include <string>
 
 const int SIZE = 4;
 
@@ -31,6 +32,9 @@ public:
     Board(bool shuffle, std::vector<unsigned int> inputs);
 
     void print();
+    void is_solvable();
+    bool victory();
+    void action(char dir, unsigned int num);
 
     // More methods
 
@@ -40,14 +44,11 @@ private:
 
     // Game grid for the 15 puzzle
     std::vector<std::vector<unsigned int>> grid_;
-
     // initializes the board
     void initialize(std::vector<unsigned int>);
     int get_seed();
-    void my_custom(std::vector<unsigned int>);
 
     // is board initialized with shuffle or manually
-    bool shuffle_;
     // More attributes/methods
 
 };

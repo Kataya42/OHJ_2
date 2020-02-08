@@ -22,50 +22,65 @@
 #include "board.hh"
 #include <iostream>
 #include <string>
-
+#include <limits>
 
 // More functions
 void init_board(Board game)
 {
+    game.is_solvable();
     game.print();
-
 }
 
 void read_integers(std::vector< unsigned int >& custom)
 {
     int new_integer = 0;
+
     for(int i = 0; i < 16; ++i)
     {
         std::cin >> new_integer;
         custom.push_back(new_integer);
     }
+    std::cin.clear();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
 
+void gameplay(Board game)
+{
+    while(game.victory()){
+        char dir;
+        int num;
+        std::cout << "Dir (command, number): ";
+        for (int i = 0; i < 2; i++){
+            if (i == 0){
+                std::cin >> dir;
+             }   else {
+                    std::cin >> num;
+                }
 
+        }
+        //std::getline(std::cin, order);
+        game.action(dir, num);
+        game.print();
+    }
+}
 
 int main()
 {
-
     std::string ans;
-    std::vector<unsigned int> custom;
-    std::vector<unsigned int> basic = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16};
-    int seed;
+    std::vector<unsigned int> init_state;
     std::cout << "Random initialization (y/n): ";
-    std::cin >> ans;
+    std::getline(std::cin, ans);
 
-    if ( ans == "y")
-    {
-        Board game = Board(true, basic);
-        init_board(game);
-
-    } else if ( ans == "n")
-    {
+    if (ans == "n")  {
         std::cout <<"Enter the numbers 1-16 in a desired order (16 means empty): " << std::endl;
-        read_integers(custom);
-        Board game = Board(false, custom);
-        init_board(game);
+        read_integers(init_state);
+    } else if ( ans == "y") {
+        init_state= {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16};
     }
 
+    Board game = Board((ans=="y"), init_state);
+    init_board(game);
+    gameplay(game);
 
     return EXIT_SUCCESS;
 }

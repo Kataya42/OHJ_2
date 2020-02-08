@@ -28,7 +28,8 @@ public:
     // 2. Implement two constructors, one for each initialization way
 
     // Prints the game grid
-    Board(bool shuffle);
+    Board(bool shuffle, std::vector<unsigned int> inputs);
+
     void print();
 
     // More methods
@@ -40,12 +41,16 @@ private:
     // Game grid for the 15 puzzle
     std::vector<std::vector<unsigned int>> grid_;
 
+    // initializes the board
+    void normal_init(std::vector<unsigned int>);
 
-    void normal_init();
+
+    void my_custom(std::vector<unsigned int>);
 
     // is board initialized with shuffle or manually
     bool shuffle_;
     // More attributes/methods
+
 };
 
 #endif // BOARD_HH

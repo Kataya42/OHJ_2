@@ -21,22 +21,25 @@
 const int EMPTY = 16;
 const unsigned int PRINT_WIDTH = 5;
 
-Board::Board(bool shuffle):
+Board::Board(bool shuffle, std::vector<unsigned int> inputs):
     shuffle_(shuffle){
     if (not shuffle){
-        normal_init();
+        normal_init(inputs);
     } //(else {
       //  my_shuffle();
       //}
 }
 
-void Board::normal_init()
+void Board::normal_init(std::vector<unsigned int> input)
 {
+    int temp = 0;
 
     for (int i = 0; i < 4; i++) {
         std::vector<unsigned int> row;
         for (int j = 0; j < 4; j++) {
-            row.push_back(i * j);
+            unsigned count = input.at(temp);
+            row.push_back(count);
+            temp += 1;
         }
         grid_.push_back(row);
 
@@ -64,6 +67,11 @@ void Board::print()
         std::cout << "|" << std::endl;
     }
     std::cout << std::string(PRINT_WIDTH * SIZE + 1, '-') << std::endl;
+}
+
+void Board::my_custom(std::vector<unsigned int>)
+{
+
 }
 
 void Board::my_shuffle(std::vector<unsigned int> &numbers, int seed)

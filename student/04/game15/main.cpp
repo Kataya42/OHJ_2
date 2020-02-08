@@ -30,18 +30,32 @@ void init_board(Board game)
 
 }
 
+void read_integers(std::vector< unsigned int >& custom)
+{
+    int new_integer = 0;
+    for(int i = 0; i < 16; ++i)
+    {
+        std::cin >> new_integer;
+        custom.push_back(new_integer);
+    }
+}
+
+
 int main()
 {
     std::string ans;
+    std::vector<unsigned int> custom;
+
     std::cout << "Random initialization (y/n): ";
     std::cin >> ans;
 
     if ( ans == "y"){
         std::cout << "ayy lmao" << std::endl;
-        Board game = Board(true);
+        Board game = Board(true, custom);
     } else if ( ans == "n"){
-        std::cout <<"nayy lmao" << std::endl;
-        Board game = Board(false);
+        std::cout <<"Enter the numbers 1-16 in a desired order (16 means empty): " << std::endl;
+        read_integers(custom);
+        Board game = Board(false, custom);
         init_board(game);
     }
 

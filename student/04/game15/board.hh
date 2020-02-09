@@ -10,46 +10,39 @@
  * E-Mail: aleksi.rissa@tuni.fi
  *
  * Notes:
- *
+ * Constructor takes two inputs, A boolean and an vector containing integers.
+ * It will either shuffle (true) the integers, or not.(false)
  * */
 
 #ifndef BOARD_HH
 #define BOARD_HH
 #include <vector>
-#include <string>
 
 const int SIZE = 4;
 
-class Board
-{
+class Board {
 public:
-    // For creating and initializing the grid, you have at least two choices:
-    // 1. Implement a constructor that fills the game grid with empties or such
-    // and two initialize methods
-    // 2. Implement two constructors, one for each initialization way
 
+    // Constructor, Initializes a new instance of the Board class
+    Board(bool shuffle, std::vector<unsigned int> inputs);  
     // Prints the game grid
-    Board(bool shuffle, std::vector<unsigned int> inputs);
-
     void print();
-    void is_solvable();
+    // Checks once whether game is solvable, returns true if so
+    bool is_solvable();
+    // Checks if victory is achieved, returns true if so
     bool victory();
+    // method for the moving of the board pieces
     void action(char dir, unsigned int num);
-
-    // More methods
 
 private:
     // Shuffles the numbers vector by using seed as a seed value
     void my_shuffle(std::vector<unsigned int>& numbers, int seed);
-
     // Game grid for the 15 puzzle
     std::vector<std::vector<unsigned int>> grid_;
     // initializes the board
-    void initialize(std::vector<unsigned int>);
+    void create_grid(std::vector<unsigned int>);
+    // Creates seed for the randomizer
     int get_seed();
-
-    // is board initialized with shuffle or manually
-    // More attributes/methods
 
 };
 

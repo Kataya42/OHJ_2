@@ -79,7 +79,38 @@ void Board::print() {
 
 void Board::is_solvable()
 {
-    std::cout << "Game is solvable: Go ahead! :) " << std::endl;
+    std::vector<std::vector<unsigned int>> test = grid_;
+
+    for (unsigned int i=0; i < 4; i++) {
+        for (unsigned int j=0; j < 4; j++) {
+            if (test[i][j] == 16 && i != 3) {
+                test[i][j] = test[i+1][j];
+                test[i+1][j] = 16;
+            }
+        }
+    }
+    unsigned int invsum = 0;
+    for (unsigned int num = 15; num > 1; num--) {
+        bool found = false;
+        unsigned int pos = 15;
+        while(not found) {
+            if (test[pos/4][pos%4] == num) {
+                found = true;
+            } else if (test[pos/4][pos%4] < num) {
+                invsum++;
+            }
+            pos--;
+        }
+    }
+    if (invsum % 2) {
+        std::cout << "solvable" << std::endl;
+    } else {
+        std::cout << "not solvable" << std::endl;
+    }
+
+
+
+    // std::cout << "Game is solvable: Go ahead! " << std::endl;
 }
 
 

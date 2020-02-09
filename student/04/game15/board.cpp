@@ -127,17 +127,22 @@ void Board::action(char com,  unsigned int num)
 
 bool Board::victory()
 {
-
-    if (grid_[0][0] < grid_[0][1] && grid_[0][2] < grid_[0][3] && grid_ [1][0] <
-        grid_[1][1] && grid_[1][2] < grid_[1][3] && grid_[2][0] <
-        grid_[2][1] && grid_[2][2] < grid_[2][3] && grid_[2][3] <
-        grid_[3][0] && grid_[3][1] < grid_[3][3] && grid_[3][2] < grid_[3][3]){
-        std::cout << "You won!" << std::endl;
-        return false;
-    } else {
+    int victory_check = 0;
+    for (unsigned int i=0; i < 4; i++) {
+        for (unsigned int j=0; j < 4; j++) {
+            if ( j != 0 && grid_[i][j-1] < grid_[i][j]){
+                victory_check ++;
+               } else if (j == 0 && i != 0 && grid_[i-1][j+3] < grid_[i][j]){
+                victory_check ++;
+            }
+          }
+        }
+        if (victory_check == 15){
+        std::cout << "Victory!" << std::endl;
         return true;
+    } else {
+        return false;
     }
-
 }
 
 void Board::my_shuffle(std::vector<unsigned int> &numbers, int seed)

@@ -60,7 +60,7 @@ bool read_integers(std::vector< unsigned int >& custom)
 
 void gameplay(Board game)
 {
-    while(game.victory()){
+    while( not game.victory()){
         char dir;
         int num;
         std::cout << "Dir (command, number): ";

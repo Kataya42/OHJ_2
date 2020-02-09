@@ -102,7 +102,7 @@ void Board::is_solvable()
             pos--;
         }
     }
-    if (invsum % 2) {
+    if (invsum % 2 == 0) {
         std::cout << "solvable" << std::endl;
     } else {
         std::cout << "not solvable" << std::endl;

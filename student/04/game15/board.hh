@@ -28,21 +28,21 @@ public:
     // Prints the game grid
     void print();
     // Checks once whether game is solvable, returns true if so
-    bool is_solvable();
+    bool isSolvable();
     // Checks if victory is achieved, returns true if so
-    bool victory();
+    bool isVictory();
     // method for the moving of the board pieces
     void action(char dir, unsigned int num);
 
 private:
     // Shuffles the numbers vector by using seed as a seed value
-    void my_shuffle(std::vector<unsigned int>& numbers, int seed);
+    void myShuffle(std::vector<unsigned int>& numbers, int seed);
     // Game grid for the 15 puzzle
     std::vector<std::vector<unsigned int>> grid_;
-    // initializes the board
-    void create_grid(std::vector<unsigned int>);
+    // creates the game grid
+    void createGrid(std::vector<unsigned int>);
     // Creates seed for the randomizer
-    int get_seed();
+    int getSeed();
 
 };
 

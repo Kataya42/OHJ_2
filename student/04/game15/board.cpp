@@ -13,6 +13,10 @@
  * inside the method. Constructor depending on the boolean (shuffle) either
  * calls for the creation of the grid using a given vector of ints or puts them
  * through the randomizer (myShuffle) of which then the grid is created.
+ * Playing the game is not done from within the object but through calling
+ * different methods found in main.cpp
+ * EMPTY is not taken from MAX even though the values are the same
+ * because their significance is different.
  * */
 
 #include "board.hh"
@@ -21,9 +25,10 @@
 #include <random>
 #include <vector>
 
-
+// which number is to be considered the "empty" tile
+// must be largest number for isVictor to work properly
 const int EMPTY = 16;
-const unsigned int PRINT_WIDTH = 5;
+const unsigned int PRINT_WIDTH = SIZE + 1;
 
 
 Board::Board(bool shuffle, std::vector<unsigned int> numbers) {
@@ -108,25 +113,36 @@ bool Board::isSolvable() {
         }
     }
 
+    // Initialize the sum of inversions
     unsigned int inv_sum = 0;
 
-    for (unsigned int n = EMPTY -1; n > 1; n--) {
+    // Go through each number from 2 to max value and count inversions
+    for (unsigned int n = 2; n < MAX; n++) {
         bool found = false;
-        unsigned int pos = EMPTY - 1;
+        // Start from last position, proceed in reverse and
+        // count inversions until the target number is found
+        unsigned int pos = MAX - 1;
         while(not found) {
+            // If target number is found, stop counting
             if (test_grid[pos/SIZE][pos%SIZE] == n) {
                 found = true;
+            // Inversion found, add to counter
             } else if (test_grid[pos/SIZE][pos%SIZE] < n) {
+                // All are added to same sum variable,
+                // so the final sum doesn't need
+                // separate additon
                 inv_sum++;
             }
+            // Decrease position
             pos--;
         }
     }
 
-    // If the inverse sum is divisivle by 2, the game is solvable
+    // If the inverse sum is even, the game is solvable
     if (inv_sum % 2 == 0) {
         std::cout << "Game is solvable: Go ahead!" << std::endl;
         return true;
+    // if odd, game is not solvable
     } else {
         std::cout << "Game is not solvable. What a pity." << std::endl;
         return false;
@@ -150,8 +166,10 @@ void Board::action(char direction,  unsigned int number) {
     }
 
     // If its not, does not attempt to move
+    // (This should never be the case, as
+    // the grid and input is checked separately)
     if (I == -1 || J == -1) {
-        std::cout << "Error" << std::endl;
+        std::cout << "Error: number not in grid!" << std::endl;
 
     // else does the movement in given direction and swaps The places assuming
     // its not out of bounds and is the EMPTY tile/number
@@ -180,7 +198,7 @@ void Board::action(char direction,  unsigned int number) {
         // if it was an illegal move
         } else {
 
-            std::cout << "impossible move " << direction << std::endl;
+            std::cout << "Impossible direction: " << direction << std::endl;
         }
     }
 }
@@ -203,7 +221,7 @@ bool Board::isVictory() {
     }
 
     // if each number is in order, prints victory and returns true
-    if (victory_check == EMPTY - 1) {
+    if (victory_check == MAX - 1) {
         std::cout << "You won!" << std::endl;
         return true;
     } else {

@@ -12,13 +12,18 @@
  * Notes:
  * Constructor takes two inputs, A boolean and an vector containing integers.
  * It will either shuffle (true) the integers, or not.(false)
+ * By changing SIZE you can scale the board, but you also will have to
+ * change EMPTY and LENGTH.
  * */
 
 #ifndef BOARD_HH
 #define BOARD_HH
 #include <vector>
 
+// size of one row
 const int SIZE = 4;
+// number of total slots in the entire grid
+const unsigned int MAX = SIZE*SIZE;
 
 class Board {
 public:
@@ -69,7 +74,8 @@ private:
     void createGrid(std::vector<unsigned int> numbers);
     /**
      * @brief Creates seed for the randomizer
-     * @return The created seed value, either inputted or taken from computer time.
+     * @return The created seed value, either inputted
+     *         or taken from computer time.
      */
     int getSeed();
 

@@ -16,12 +16,14 @@
  * E-Mail: aleksi.rissa@tuni.fi
  *
  * Notes about the program and it's implementation:
- *  Program creates a Board object using a boolean and a vector of ints, this
+ * Program creates a Board object using a boolean and a vector of ints, this
  * can bec onsidered the game board. There are no user inputs inside the
- * object aside from seed creation, if necesary. User inputs happen in the
- * "gameplay" fuction which calls all the necesary methods to
- * execute a turn in the game. Program also checks weather created board can
+ * object aside from seed creation, if necesary. A turn of the game happens
+ * in a while loop inside the gameplay fucntion.
+ * It contains all phases to ensure a sucssesful and legal turn.
+ * Program also checks weather created board can
  * be solved, informs the user about it and ends the program if not so.
+ * Game is scalable by changing the value of SIZE, LENGTH and EMPTY
  *
  * */
 
@@ -31,7 +33,11 @@
 #include <algorithm>
 #include <limits>
 
+// the amount of numbers to be added to the grid
+// must be equal to MAX for program to work
+// (SIZE * SIZE, default 16)
 const int LENGTH = 16;
+
 
 /**
  * @brief Function for adding numbers in an desired order in a vector
@@ -57,7 +63,7 @@ void customVector(std::vector< unsigned int >& init_vector) {
  * @param init_vector, the vector to be checked
  * @return boolean whether vector was correct or not
  */
-bool isCorrect(std::vector< unsigned int >& init_vector){
+bool isCorrect(std::vector< unsigned int >& init_vector) {
 
     // vector to store all missing integers
     std::vector<int> missing_ints;
@@ -65,12 +71,13 @@ bool isCorrect(std::vector< unsigned int >& init_vector){
     // checks original vector for integers and if not found
     // adds them to missing integers vector
     for (int i = 1; i < LENGTH; ++i) {
-        if (not (std::count(init_vector.begin(), init_vector.end(), i))){
+        if (not (std::count(init_vector.begin(), init_vector.end(), i))) {
             missing_ints.push_back(i);
         }
     }
 
     // if there is a missing integer, prints it and returns true
+    // only prints the first missing integer
     if (missing_ints.size()!= 0) {
         std::cout << "Number " << (missing_ints[0])
                 << " is missing" << std::endl;
@@ -81,39 +88,91 @@ bool isCorrect(std::vector< unsigned int >& init_vector){
 }
 
 /**
+ * @brief Fuction asks the user for a command (direction) and a number
+ * @return input, entire string of inputs the user has submitted
+ */
+std::string userInput() {
+
+    // reseting all strings inbetween command inputs
+    std::string buffer = "";
+    std::string input = "";
+    int temp  = 0;
+
+    // takes two strings from user
+    std::cout << "Dir (command, number): ";
+    while (temp < 2 && buffer != "q") {
+        std::cin >> buffer;
+        input += buffer;
+        input += " ";
+        temp ++;
+
+    // clearing the cin buffer
+    std::cin.ignore();
+
+    }
+    return input;
+}
+
+/**
+ * @brief Fuction checks are the given user inputs valid
+ *        and if so, attempts to move them
+ * @param game, object containing all information concerning the game state
+ * @param direction_string, string with the user inputted direction to move
+ * @param number_string, string with the user inputted number to move
+ */
+void PieceMovement(Board& game, std::string direction_string,
+                   std::string number_string) {
+
+    // Checks if the second string contains only numbers
+    bool is_digits = true;
+    for (char c : number_string){
+        if (not (c >= '0' && c <= '9')) {
+            is_digits = false;
+        }
+    }
+
+    // if input is not any of the allowed dirctions, prints unknown command
+    if (not (direction_string == "w" || direction_string == "a"
+             || direction_string == "s" || direction_string == "d")) {
+        std::cout << "Unknown command: " << direction_string << std::endl;
+
+    // else if it is not any of the allow numbers in range
+    // or not an number at all prints Invalid number
+    } else if (is_digits == false || std::stoi(number_string) < 0
+               || std::stoi(number_string) > LENGTH-1 ) {
+        std::cout << "Invalid number: " << number_string << std::endl;
+
+    // else if all checks out, attempts to do the requested Movement
+    } else {
+       char direction = direction_string[0];
+       int number = std::stoi(number_string);
+       game.action(direction, number);
+    }
+    // finally updates the game board
+    game.print();
+}
+
+/**
  * @brief Handles gameplay after the board has been properly initialized
  * @param game, object containing all information concerning the game state
  */
-void gameplay(Board game) {
+void gameplay(Board& game) {
 
     bool has_quit = false;
-    char direction;
-    int number;
 
-
-    // while the game has not achived victory and user has not inputted "q" or quit.
+    // while the game has not achived victory
+    // and user has not inputted "q" or quit.
     while(not game.isVictory() && not has_quit) {
         bool space_pressed = false;
-
-        // reseting all strings inbetween inputs
         std::string number_string  = "";
         std::string direction_string = "";
-        std::string buffer = "";
-        std::string input = "";
-        int temp  = 0;
 
-        // takes two strings from user
-        std::cout << "Dir (command, number): ";
-        while (temp < 2 && buffer != "q"){
-            std::cin >> buffer;
-            input += buffer;
-            input += " ";
-            temp ++;
-        }
+        // get the user inputted string
+        std::string input = userInput();
 
         // dividing the input into two strings,
         // one for direction command, the other for the number
-        for (auto c : input) {
+        for (char c : input) {
             if (c == ' ') {
                 // separated by space
                 space_pressed = true;
@@ -124,27 +183,10 @@ void gameplay(Board game) {
             }
         }
 
-        // clearing the cin buffer
-        std::cin.ignore();
-
+        // if user has not quit, proceeds to move a
+        // piece with given direction and number
         if(direction_string != "q") {
-            // if input is not any of the allowed dirctions, throws an error
-            if (not (direction_string == "w" || direction_string == "a"
-                     || direction_string == "s" || direction_string == "d")) {
-                std::cout << "Unknown command: " << direction_string << std::endl;
-
-            // else if it is not any of the allow numbers in range, throws an error
-            } else if (std::stoi(number_string) < 0 || std::stoi(number_string) > LENGTH-1) {
-                std::cout << "invalid number: " << number_string << std::endl;
-
-            // else if all checks out, attempts to do the requested action, or movement
-            } else {
-               direction = direction_string[0];
-               number = std::stoi(number_string);
-               game.action(direction, number);
-            }
-            // finally updates the game board
-            game.print();
+            PieceMovement(game, direction_string, number_string);
         } else {
             has_quit = true;
         }
@@ -164,8 +206,11 @@ int main() {
 
         // If answer is n, will forward the user to custom inputs
         if (ans == "n") {
-            std::cout <<"Enter the numbers 1-16 in a desired order"
-                        " (16 means empty):" << std::endl;
+            // length of the amount of digits user is requested depends
+            // on what sized board is desired
+            std::cout <<"Enter the numbers 1-"<< LENGTH <<
+                        " in a desired order (" << LENGTH <<
+                        " means empty):" << std::endl;
             customVector(init_state);
             if (isCorrect(init_state)) {
                  return EXIT_FAILURE;
@@ -173,7 +218,7 @@ int main() {
 
         // else if creates a vector with numbers in order
         } else if (ans == "y") {
-            for(int i = 1; i < LENGTH + 1; i++){
+            for(int i = 1; i < LENGTH + 1; i++) {
                 init_state.push_back(i);
             }
 

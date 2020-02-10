@@ -48,8 +48,7 @@ void customVector(std::vector< unsigned int >& init_vector) {
     }
 
     // clearing the cin buffer
-    std::cin.clear();
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::cin.ignore();
 
  }
 
@@ -87,51 +86,69 @@ bool isCorrect(std::vector< unsigned int >& init_vector){
  */
 void gameplay(Board game) {
 
-    // for checking does user want to quit the game
     bool has_quit = false;
-    // the direction user wants to move
     char direction;
-    // the number to be moved
     int number;
 
+
     // while the game has not achived victory and user has not inputted "q" or quit.
-    while(not (game.isVictory() || has_quit)) {
+    while(not game.isVictory() && not has_quit) {
+        bool space_pressed = false;
+
+        // reseting all strings inbetween inputs
+        std::string number_string  = "";
+        std::string direction_string = "";
+        std::string buffer = "";
+        std::string input = "";
+        int temp  = 0;
+
+        // takes two strings from user
         std::cout << "Dir (command, number): ";
-        for (int i = 0; i < 2; i++) {
-            // checks the first character of the string
-            if (i == 0){
-                std::cin >> direction;
-                // breaks the loop if input is "q" or quit
-                if (direction == 'q') {
-                    has_quit = true;
-                    break;
-                }
+        while (temp < 2 && buffer != "q"){
+            std::cin >> buffer;
+            input += buffer;
+            input += " ";
+            temp ++;
+        }
+
+        // dividing the input into two strings,
+        // one for direction command, the other for the number
+        for (auto c : input) {
+            if (c == ' ') {
+                // separated by space
+                space_pressed = true;
+            } else if (not space_pressed) {
+                direction_string += c;
             } else {
-                std::cin >> number;
+                number_string += c;
             }
         }
 
-        if(not has_quit) {
-            // clearing the cin buffer
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        // clearing the cin buffer
+        std::cin.ignore();
 
+        if(direction_string != "q") {
             // if input is not any of the allowed dirctions, throws an error
-            if (not (direction == 'w' || direction == 'a'
-                     || direction == 's' || direction == 'd')) {
-                std::cout << "Unknown command: " << direction << std::endl;
+            if (not (direction_string == "w" || direction_string == "a"
+                     || direction_string == "s" || direction_string == "d")) {
+                std::cout << "Unknown command: " << direction_string << std::endl;
 
             // else if it is not any of the allow numbers in range, throws an error
-            } else if (number < 0 || number > LENGTH-1) {
-                std::cout << "invalid number: " << number << std::endl;
+            } else if (std::stoi(number_string) < 0 || std::stoi(number_string) > LENGTH-1) {
+                std::cout << "invalid number: " << number_string << std::endl;
 
             // else if all checks out, attempts to do the requested action, or movement
             } else {
+               direction = direction_string[0];
+               number = std::stoi(number_string);
                game.action(direction, number);
             }
             // finally updates the game board
             game.print();
+        } else {
+            has_quit = true;
         }
+
     }
 }
 

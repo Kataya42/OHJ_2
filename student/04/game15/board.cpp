@@ -53,7 +53,7 @@ void Board::createGrid(std::vector<unsigned int> numbers) {
     for (unsigned int i = 0; i < SIZE; i++) {
         std::vector<unsigned int> row;
         for (int j = 0; j < SIZE; j++) {
-            unsigned count = numbers.at(temp);
+            unsigned count = numbers[temp];
             row.push_back(count);
             temp += 1;
         }
@@ -85,8 +85,8 @@ void Board::print() {
             std::cout << "|" << std::setw(PRINT_WIDTH - 1);
             // if number to be printed is not the "EMPTY" number (default 16)
             // it print the number
-            if(grid_.at(x).at(y) != EMPTY) {
-                std::cout << grid_.at(x).at(y);
+            if(grid_[x][y]!= EMPTY) {
+                std::cout << grid_[x][y];
             // otherwise it prints an "empty" slot, makerd by a dot
             } else {
                 std::cout << ".";
@@ -238,10 +238,10 @@ void Board::myShuffle(std::vector<unsigned int> &numbers, int seed) {
 
     for(unsigned int i = 0; i < numbers.size(); ++i) {
         unsigned int random_index = distr(randomEng);
-        unsigned int temp = numbers.at(i);
+        unsigned int temp = numbers[i];
         // Assigns the numbers to random indexes in the vector
-        numbers.at(i) = numbers.at(random_index);
-        numbers.at(random_index) = temp;
+        numbers[i] = numbers[random_index];
+        numbers[random_index] = temp;
     }
     createGrid(numbers);
 }

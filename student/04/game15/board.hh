@@ -18,6 +18,7 @@
 
 #ifndef BOARD_HH
 #define BOARD_HH
+
 #include <vector>
 
 // size of one row

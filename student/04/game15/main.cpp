@@ -28,9 +28,12 @@
  * */
 
 #include "board.hh"
+
+#include <algorithm>
 #include <iostream>
 #include <string>
-#include <algorithm>
+#include <vector>
+
 // the amount of numbers to be added to the grid
 // must be equal to MAX for program to work
 // (SIZE * SIZE, default 16)
@@ -53,8 +56,7 @@ void customVector(std::vector< unsigned int >& init_vector) {
 
     // clearing the cin buffer
     std::cin.ignore();
-
- }
+}
 
 /**
  * @brief Checks the given vector does it contain all necesary numbers

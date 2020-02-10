@@ -20,10 +20,11 @@
  * */
 
 #include "board.hh"
-#include <iostream>
+
 #include <iomanip>
+#include <iostream>
+
 #include <random>
-#include <vector>
 
 // which number is to be considered the "empty" tile
 // must be largest number for isVictor to work properly
@@ -173,6 +174,7 @@ void Board::action(char direction,  unsigned int number) {
 
     // else does the movement in given direction and swaps The places assuming
     // its not out of bounds and is the EMPTY tile/number
+    // w = up, s = down, a = left, d = right
     } else {
 
         if (direction == 'w' && I > 0 && grid_[I-1][J] == EMPTY) {

@@ -31,8 +31,6 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
-#include <limits>
-
 // the amount of numbers to be added to the grid
 // must be equal to MAX for program to work
 // (SIZE * SIZE, default 16)

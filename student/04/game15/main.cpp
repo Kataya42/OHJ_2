@@ -34,10 +34,8 @@
 const int LENGTH = 16;
 
 /**
- * Function for adding numbers in an desired order in a vector
- *
+ * @brief Function for adding numbers in an desired order in a vector
  * @param init_vector, the vector to be filled with custom numbers
- *
  */
 void customVector(std::vector< unsigned int >& init_vector) {
 
@@ -56,8 +54,7 @@ void customVector(std::vector< unsigned int >& init_vector) {
  }
 
 /**
- * Checks the given vector does it contain all necesary numbers
- *
+ * @brief Checks the given vector does it contain all necesary numbers
  * @param init_vector, the vector to be checked
  * @return boolean whether vector was correct or not
  */
@@ -85,10 +82,8 @@ bool isCorrect(std::vector< unsigned int >& init_vector){
 }
 
 /**
- * Handles gameplay after the board has been properly initialized
- *
+ * @brief Handles gameplay after the board has been properly initialized
  * @param game, object containing all information concerning the game state
- *
  */
 void gameplay(Board game) {
 
@@ -180,5 +175,3 @@ int main() {
     }
     return EXIT_SUCCESS;
 }
-
-

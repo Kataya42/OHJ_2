@@ -25,6 +25,7 @@
 const int EMPTY = 16;
 const unsigned int PRINT_WIDTH = 5;
 
+
 Board::Board(bool shuffle, std::vector<unsigned int> numbers) {
 
     // if numbers in vector are to be shuffled,
@@ -121,6 +122,8 @@ bool Board::isSolvable() {
             pos--;
         }
     }
+
+    // If the inverse sum is divisivle by 2, the game is solvable
     if (inv_sum % 2 == 0) {
         std::cout << "Game is solvable: Go ahead!" << std::endl;
         return true;
@@ -132,11 +135,13 @@ bool Board::isSolvable() {
 
 void Board::action(char direction,  unsigned int number) {
 
+    // Integers used for error checking
     int I = -1;
     int J = -1;
 
     for (unsigned int i=0; i < SIZE; i++) {
         for (unsigned int j=0; j < SIZE; j++) {
+            // Makes sure the given number is in the grid
             if (grid_[i][j] == number) {
               I = (signed)i;
               J = (signed)j;
@@ -144,8 +149,12 @@ void Board::action(char direction,  unsigned int number) {
         }
     }
 
+    // If its not, does not attempt to move
     if (I == -1 || J == -1) {
-        std::cout << "REEEE" << std::endl;
+        std::cout << "Error" << std::endl;
+
+    // else does the movement in given direction and swaps The places assuming
+    // its not out of bounds and is the EMPTY tile/number
     } else {
 
         if (direction == 'w' && I > 0 && grid_[I-1][J] == EMPTY) {
@@ -168,7 +177,9 @@ void Board::action(char direction,  unsigned int number) {
             grid_[I][J+1] = number;
             grid_[I][J] = EMPTY;
 
+        // if it was an illegal move
         } else {
+
             std::cout << "impossible move " << direction << std::endl;
         }
     }
@@ -208,6 +219,7 @@ void Board::myShuffle(std::vector<unsigned int> &numbers, int seed) {
     for(unsigned int i = 0; i < numbers.size(); ++i) {
         unsigned int random_index = distr(randomEng);
         unsigned int temp = numbers.at(i);
+        // Assigns the numbers to random indexes in the vector
         numbers.at(i) = numbers.at(random_index);
         numbers.at(random_index) = temp;
     }

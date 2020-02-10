@@ -23,26 +23,58 @@ const int SIZE = 4;
 class Board {
 public:
 
-    // Constructor, Initializes a new instance of the Board class
-    Board(bool shuffle, std::vector<unsigned int> inputs);  
-    // Prints the game grid
+    /**
+     * @brief Constructor, Initializes a new instance of the Board class
+     * @param shuffle boolean checks is given vector to be shuffled
+     * @param numbers, integer vector to be used for creation of the grid
+     */
+    Board(bool shuffle, std::vector<unsigned int> numbers);
+
+    /**
+     * @brief Function prints the current game board state.
+     */
     void print();
-    // Checks once whether game is solvable, returns true if so
+
+    /**
+     * @brief Checks once whether game is solvable
+     * @return true if game is solvavle
+     */
     bool isSolvable();
-    // Checks if victory is achieved, returns true if so
+
+    /**
+     * @brief Checks if victory is achieved
+     * @return returns true if victory has been achieved
+     */
     bool isVictory();
-    // method for the moving of the board pieces
-    void action(char dir, unsigned int num);
+
+    /**
+     * @brief method for the moving of the board pieces
+     * @param direction, Char showing the desired direction of the movement
+     * @param number, integer showing the desired number to be moved
+     */
+    void action(char direction, unsigned int number);
 
 private:
-    // Shuffles the numbers vector by using seed as a seed value
+    /**
+     * @brief Shuffles the numbers vector by using seed as a seed value
+     * @param numbers, integer vector to be shuffled
+     * @param seed, seed value to be used in the random generation
+     */
     void myShuffle(std::vector<unsigned int>& numbers, int seed);
-    // Game grid for the 15 puzzle
-    std::vector<std::vector<unsigned int>> grid_;
-    // creates the game grid
-    void createGrid(std::vector<unsigned int>);
-    // Creates seed for the randomizer
+
+    /**
+     * @brief creates the game grid
+     * @param numbers integer vector that will be turned into the grid
+     */
+    void createGrid(std::vector<unsigned int> numbers);
+    /**
+     * @brief Creates seed for the randomizer
+     * @return The created seed value, either inputted or taken from computer time.
+     */
     int getSeed();
+
+    //Game grid for the 15 puzzle
+    std::vector<std::vector<unsigned int>> grid_;
 
 };
 

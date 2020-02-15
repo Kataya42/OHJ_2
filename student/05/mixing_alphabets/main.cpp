@@ -18,7 +18,9 @@ int main()
         {
             return EXIT_SUCCESS;
         } else {
-            std::shuffle(std::begin(word),std::end(word),generator);
+            if (word.size() > 3){
+            std::shuffle(std::begin(word)+1,std::end(word)-1,generator);
+            }
         }
         std::cout << word << std::endl;
     }

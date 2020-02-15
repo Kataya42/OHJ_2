@@ -48,10 +48,10 @@ int main()
 
 
         }
-        cout << "Final score:" << endl;
+        cout << "Final scores:" << endl;
         for (auto i : scores){
-            cout << i.first << " ";
-            cout << i.second << " " << endl;
+            cout << i.first << ": ";
+            cout << i.second << endl;
         }
 
     }

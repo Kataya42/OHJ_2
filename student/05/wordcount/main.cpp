@@ -9,11 +9,12 @@ using namespace std;
 
 int main()
 {
-    map<string,int> occurance;
+    map<string,vector<int>> occurance;
+
     string input = "hell.txt";
     vector<string> words;
     vector<string> lines;
-    vector<string> locations;
+    //vector<string> locations;
     //cout << "Input file: ";
     //getline(cin, input);
 
@@ -24,51 +25,77 @@ int main()
     } else {
        string stuf;
 
-       int line_by = 1;
+       int line = 1;
        char sep = ' ';
 
         while (getline(file_object, stuf)){
+            vector<int> rows;
             string temp;
             for (char c : stuf){
                 if (c == sep){
-                    words.push_back(temp);
+                    // words.push_back(temp);
+                    if (occurance.find(temp) != occurance.end()) {
+                        // found
+                        occurance[temp].push_back(line);
+                    } else {
+                        // not found, make new
+                        rows.push_back(line);
+                        occurance[temp] = rows;
+                    }
+
+                    //rows.push_back(line);
+                    //occurance[temp] = rows;
                     temp = "";
                 } else {
                     temp += c;
                 }
             }
-            words.push_back(temp);
-            string test = to_string(line_by);
-            stuf += test;
-            lines.push_back(stuf);
-            line_by ++;
 
-        }
-        for (auto i : words){
-            if ( occurance.find(i) != occurance.end() ) {
-                // The word was found in the map.
-                occurance[i] = occurance[i]+1;
+            if (occurance.find(temp) != occurance.end()) {
+                // found
+                occurance[temp].push_back(line);
             } else {
-                // The word was not found in the map.
-                occurance[i] = 1;
+                // not found, make new
+                rows.push_back(line);
+                occurance[temp] = rows;
             }
+            //words.push_back(temp);
+            // string test = to_string(line_by);
+            // stuf += test;
+            //lines.push_back(stuf);
+            line ++;
+        }
 
-//        }
-//        for (auto c: occurance){
-//            if (find(lines.begin(), lines.end(), c.first) != lines.end()){
-//                cout << "yes" << endl;
+//        for (auto i : words){
+//            if ( occurance.find(i) != occurance.end() ) {
+//                // The word was found in the map.
+//                occurance[i] = occurance[i]+1;
 //            } else {
-//                cout << "no" << endl;
+//                // The word was not found in the map.
+//                occurance[i] = 1;
 //            }
 
-        }
-        for (auto c : lines){
-            cout << c << endl;
-        }
-        for (auto c : occurance){
-            cout << c.first << " " << c.second << ":" << endl;
-        }
-    }
+//        }
+
+//        for (auto c: occurance){
+//            if (find(words_s.begin(), words_s.end(), c.first) != words_s.end()){
+//                cout << "yes" << endl;
+//           } else {
+//               cout << "no" << endl;
+//            }
+
+//        }
+
+
+
+
+//        for (auto c : lines){
+//            cout << c << endl;
+//        }
+       for (auto c : occurance){
+           cout << c.first << " " << c.second.size() << ":" << endl;
+       }
+       }
 
     return EXIT_SUCCESS;
 }

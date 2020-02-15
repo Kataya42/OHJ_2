@@ -17,6 +17,7 @@ int main()
     ifstream file_object(input);
     if (not file_object) {
         cout << "Error! The file " << input <<  " cannot be opened." << endl;
+        return EXIT_FAILURE;
     } else {
         string stuf;
         while (getline(file_object, stuf)){
@@ -32,5 +33,5 @@ int main()
     }
     outfile.close();
 
-    return 0;
+    return EXIT_SUCCESS;
 }

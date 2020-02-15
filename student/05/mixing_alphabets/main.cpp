@@ -17,10 +17,9 @@ int main()
         if (word == "END")
         {
             return EXIT_SUCCESS;
+        } else {
+            std::shuffle(std::begin(word),std::end(word),generator);
         }
-
-        // TODO: implement your solution here
-	
         std::cout << word << std::endl;
     }
 }

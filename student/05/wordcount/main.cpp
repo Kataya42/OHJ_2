@@ -28,11 +28,23 @@ int main()
 
             string temp;
             for (char c : stuf){
+
                 vector<int> rows;
                 if (c == sep){
+                    bool test = false;
                     if (occurance.find(temp) != occurance.end()) {
                         // found
-                        occurance[temp].push_back(line);
+                        for (int i : occurance[temp]){
+                            if (i == line){
+                                test = true;
+                            } else {
+                                test = false;
+                            }
+                        }
+                        if (not test){
+                            occurance[temp].push_back(line);
+                        }
+
                     } else {
                         // not found, make new
                         rows.push_back(line);
@@ -43,13 +55,23 @@ int main()
                     temp += c;
                 }
             }
-
+            bool test = false;
+            vector<int> rows;
             if (occurance.find(temp) != occurance.end()) {
                 // found
-                occurance[temp].push_back(line);
+                for (int i : occurance[temp]){
+                    if (i == line){
+                        test = true;
+                    } else {
+                        test = false;
+                    }
+                }
+                if (not test){
+                    occurance[temp].push_back(line);
+                }
+
             } else {
                 // not found, make new
-                vector<int> rows;
                 rows.push_back(line);
                 occurance[temp] = rows;
             }

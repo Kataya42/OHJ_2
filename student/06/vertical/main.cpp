@@ -10,9 +10,16 @@ void print_vertical(unsigned int num)
     RECURSIVE_FUNC
     // Do not remove RECURSIVE_FUNC declaration, it's necessary for automatic testing to work
     // ------------
-
-
-    // Add your implementation here
+    string str = to_string(num);
+    int len = str.length();
+    if(len <= 1) {
+        cout << str[0] << endl;
+    } else {
+        cout << str[0] << endl;
+        str.erase(0,1);
+        unsigned int new_num = stoi(str);
+        print_vertical(new_num);
+    }
 }
 
 // Do not modify rest of the code, or the automated testing won't work.

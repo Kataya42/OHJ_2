@@ -38,16 +38,56 @@ std::vector<std::string> split(const std::string& s, const char delimiter, bool 
 }
 
 struct Product {
-    std::string product_name;
+    std::string name;
     double price;
 };
+
+void inputFile( std::map< std::string,std::map < std::string, std::map <std::string, Product>> > &all, const std::vector<std::string> &line) {
+
+
+    std::string store = line[0];
+    std::string location = line[1];
+    std::string product = line[2];
+    double price = 0;
+
+    if ( line[3] != "out-of-stock")
+        price = stod(line[3]);
+
+    Product pro;
+    pro.name = product;
+    pro.price = price;
+
+    all.insert({store,{}});
+    all[store].insert({location,{}});
+    all[store][location].insert({product,pro});
+
+
+
+   // if (price == 0){
+   //     std::cout << store << " " << location << " " << product << " out of stock" << std::endl;
+   // } else {
+   //     std::cout << store << " " << location << " " << product << " " << price << std::endl;
+   //  }
+
+
+
+
+}
 
 int main()
 {
     std::string input = "products.input";
 
+    std::map< std::string,std::map < std::string, std::map <std::string, Product>> > all;
 
-    std::vector<std::string> all_the_stuff;
+    // map with store name ( map with location name ( map with products)))
+    // store chain
+        // store location
+            // product
+                // name
+                // price
+
+    // std::vector<std::string> all_the_stuff;
 
     //std::cout << "Input file: ";
     //getline(cin, input);
@@ -61,22 +101,13 @@ int main()
         std::string line;
         while (getline(file_object, line)){
             std::vector<std::string> strings = split(line, ';', true);
-            all_the_stuff.push_back(strings[0]);
-            all_the_stuff.push_back(strings[1]);
-            all_the_stuff.push_back(strings[2]);
-            all_the_stuff.push_back(strings[3]);
+            inputFile(all, strings);
         }
     }
+    // for (unsigned int i = 0; i < all.size(); i++){
+    //    std::cout  << i << std::endl;
+    // }
+    std::cout << all["Prisma"]["Lielahti"]["sausage"].name << " " << all["Prisma"]["Lielahti"]["sausage"].price << std::endl;
 
-    int n = 1;
-    for (auto i : all_the_stuff) {
-        if (n % 4 == 0) {
-            std::cout << i << std::endl;
-            n++;
-        }else {
-            std::cout << i << " ";
-            n++;
-        }
-    }
     return EXIT_SUCCESS;
 }

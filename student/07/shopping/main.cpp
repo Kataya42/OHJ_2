@@ -16,6 +16,7 @@
 #include <vector>
 #include <map>
 #include <fstream>
+#include <algorithm>
 
 std::vector<std::string> split(const std::string& s, const char delimiter, bool ignore_empty = false){
     std::vector<std::string> result;
@@ -57,6 +58,7 @@ void inputFile( std::map< std::string,std::map < std::string, std::map <std::str
     all[line[0]][line[1]].insert({line[2],pro});
 }
 
+
 void menu(std::map< std::string,std::map < std::string, std::map <std::string, Product>> > &all) {
 
     std::string input;
@@ -66,15 +68,63 @@ void menu(std::map< std::string,std::map < std::string, std::map <std::string, P
         std::vector<std::string> args = split(input, ' ', true);
 
         if (args[0] == "chains"){
-            std::cout << "here are the available store chains" << std::endl;
+            //std::cout << "here are the available store chains" << std::endl;
+            for (auto c : all)
+                std::cout << c.first << std::endl;
+
         } else if (args[0] == "stores") {
-            std::cout << "here are the stores of a certain chain" << std::endl;
+            //std::cout << "here are the stores of a certain chain" << std::endl;
+            for (auto c : all[args[1]])
+                std::cout << c.first << std::endl;
+
         } else if (args[0] == "selection") {
-            std::cout << "here is the selection of a store" << std::endl;
+            //std::cout << "here is the selection of a store" << std::endl;
+            for (auto c : all[args[1]][args[2]])
+                std::cout << c.second.name << " " << c.second.price <<std::endl;
+
         } else if (args[0] == "cheapest") {
-            std::cout << "cheapest products of selected name" << std::endl;
+            //std::cout << "cheapest products of selected name" << std::endl;
+            double cheapestPrice = 99;
+            for (auto c : all){
+                for (auto v : c.second){
+                    if (v.second[args[1]].price > 0 && v.second[args[1]].price < cheapestPrice){
+                        cheapestPrice = v.second[args[1]].price;
+                    }
+
+
+                }
+            }
+            std::cout << cheapestPrice << " euros" << std::endl;
+            for (auto c : all){
+                for (auto v : c.second){
+                    if (v.second[args[1]].price == cheapestPrice){
+                        std::cout << c.first << " " << v.first << std::endl;
+                    }
+                }
+            }
+
+
         } else if (args[0] == "products") {
-            std::cout << "here are all prodcuts there are" << std::endl;
+            //std::cout << "here are all prodcuts there are" << std::endl;
+            std::vector<std::string> foundItems;
+            for (auto c : all){
+                for (auto v : c.second){
+                    for (auto b : v.second){
+                        if (std::find(foundItems.begin(), foundItems.end(), b.second.name) != foundItems.end())
+                        {
+
+                        } else {
+                            foundItems.push_back(b.second.name);
+                            std::cout << b.second.name << std::endl;
+                        }
+
+                    }
+                }
+
+            }
+
+
+
         }  else if (args[0] != "quit") {
             std::cout << "Error: unknown command: " << args[0] << std::endl;
         }

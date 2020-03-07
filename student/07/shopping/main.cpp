@@ -17,6 +17,16 @@
 #include <map>
 #include <fstream>
 #include <algorithm>
+#include <limits>
+
+const double OUT_OF_STOCK = -1.0;
+struct Product {
+    std::string name;
+    double price;
+};
+
+typedef std::map<std::string, std::map<std::string, Product>> stores;
+
 
 std::vector<std::string> split(const std::string& s, const char delimiter, bool ignore_empty = false){
     std::vector<std::string> result;
@@ -37,23 +47,14 @@ std::vector<std::string> split(const std::string& s, const char delimiter, bool 
     }
     return result;
 }
-struct Product {
-    std::string name;
-    double price;
-};
-void inputFile( std::map< std::string,std::map < std::string, std::map <std::string, Product>> > &all, const std::vector<std::string> &line) {
+void inputFile(std::map< std::string, stores > &chains, const std::vector<std::string> &line) {
 
-    double price = 98;
+    double price = OUT_OF_STOCK;
     if ( line[3] != "out-of-stock")
         price = stod(line[3]);
 
-    Product pro;
-    pro.name = line[2];
-    pro.price = price;
-
-    //all.insert({line[0],{}});
-    //all[line[0]].insert({line[1],{}});
-    all[line[0]][line[1]].insert({line[2],pro});
+    Product prod = {line[2],price};
+    chains[line[0]][line[1]].insert({line[2],prod});
 }
 bool correctArgs(const std::vector<std::string> &args, const unsigned int &correctNumber){
     if (args.size() == correctNumber){
@@ -64,55 +65,73 @@ bool correctArgs(const std::vector<std::string> &args, const unsigned int &corre
     }
 
 }
-void Findcheapest(const std::map< std::string,std::map < std::string, std::map <std::string, Product>> > &all,const std::vector<std::string> &args){
-    //std::cout << "cheapest products of selected name" << std::endl;
-    double cheapestPrice = 99;
-    for (auto c : all){
-        for (auto v : c.second){
-            if (v.second[args[1]].price > 0 && v.second[args[1]].price < cheapestPrice){
-                cheapestPrice = v.second[args[1]].price;
+void findChains(const std::map< std::string,stores  > &chains){
+    for (std::pair <std::string,stores> chainPair : chains)
+        std::cout << chainPair.first << std::endl;
+}
+void findStores(std::map< std::string, stores > &chains, const std::string &store){
 
+    if ( chains.find(store) == chains.end() ) {
+      std::cout << "Error: unknown chain name" << std::endl;
+    } else {
+        for (std::pair <std::string,std::map<std::string,Product>> storePair : chains[store])
+            std::cout << storePair.first << std::endl;
+    }
+}
+void findSelection(std::map< std::string, stores > &chains, const std::string &chain, const std::string &store){
+    if ( chains.find(chain) == chains.end() ) {
+      std::cout << "Error: unknown chain name" << std::endl;
+    } else if (chains[chain].find(store) == chains[chain].end()){
+      std::cout << "Error: unknown store" << std::endl;
+    } else {
+       for (std::pair <std::string,Product> productPair : chains[chain][store])
+           std::cout << productPair.second.name << " " << productPair.second.price <<std::endl;
+    }
+}
+void findCheapest(const std::map< std::string, stores > &chains, const std::string &product){
+    double cheapestPrice = __DBL_MAX__;
+    bool isNotInStock = false;
+    for (std::pair <std::string,stores>  chainPair : chains){
+        for (std::pair <std::string,std::map<std::string,Product>> storePair : chainPair.second){
+            if (storePair.second[product].price > 0 && storePair.second[product].price < cheapestPrice){
+                cheapestPrice = storePair.second[product].price;
+            } else if (storePair.second[product].price == OUT_OF_STOCK){
+                isNotInStock = true;
             }
         }
     }
 
-    if (cheapestPrice == 99) {
-        std::cout << "The product is not part of product selection" << std::endl;
-    } else if (cheapestPrice == 98){
+    if (cheapestPrice == __DBL_MAX__ && isNotInStock) {
         std::cout << "The product is temporarily out of stock everywhere" << std::endl;
+    } else if (cheapestPrice == __DBL_MAX__){
+        std::cout << "The product is not part of product selection" << std::endl;
     }else {
         std::cout << cheapestPrice << " euros" << std::endl;
 
-        for (auto c : all){
-            for (auto v : c.second){
-                if (v.second[args[1]].price == cheapestPrice){
-                    std::cout << c.first << " " << v.first << std::endl;
+        for (std::pair <std::string,stores> chainPair : chains){
+            for (std::pair <std::string,std::map<std::string,Product>> storePair : chainPair.second){
+                if (storePair.second[product].price == cheapestPrice){
+                    std::cout << chainPair.first << " " << storePair.first << std::endl;
                 }
             }
         }
     }
 }
-void findProducts(const std::map< std::string,std::map < std::string, std::map <std::string, Product>> > &all){
-    //std::cout << "here are all prodcuts there are" << std::endl;
+void findProducts(const std::map< std::string, stores> &chains){
+    //std::cout << "here are chains prodcuts there are" << std::endl;
     std::vector<std::string> foundItems;
-    for (auto c : all){
-        for (auto v : c.second){
-            for (auto b : v.second){
-                if (std::find(foundItems.begin(), foundItems.end(), b.second.name) != foundItems.end())
-                {
-
-                } else {
-                    foundItems.push_back(b.second.name);
-                    std::cout << b.second.name << std::endl;
+    for (std::pair <std::string,stores> chainPair : chains){
+        for (std::pair <std::string,std::map<std::string,Product>> storePair : chainPair.second){
+            for (std::pair <std::string,Product> productPair : storePair.second){
+                if (not (std::find(foundItems.begin(), foundItems.end(), productPair.second.name) != foundItems.end())){
+                    foundItems.push_back(productPair.second.name);
+                    std::cout << productPair.second.name << std::endl;
                 }
-
             }
         }
-
     }
-
 }
-void menu( std::map< std::string,std::map < std::string, std::map <std::string, Product>> > &all) {
+void menu(std::map< std::string,stores > &chains) {
 
     std::string input;
     while (input != "quit") {
@@ -121,38 +140,24 @@ void menu( std::map< std::string,std::map < std::string, std::map <std::string, 
         std::vector<std::string> args = split(input, ' ', true);
 
         if (args[0] == "chains") {
-            if (correctArgs(args, 1)){
-                for (auto c : all)
-                    std::cout << c.first << std::endl;
-            }
-        } else if (args[0] == "stores") {
+            if (correctArgs(args, 1))
+                findChains(chains);
 
-             if (correctArgs(args, 2)) {
-                 if ( all.find(args[1]) == all.end() ) {
-                   std::cout << "Error: unknown chain name" << std::endl;
-                 } else {
-                     for (auto c : all[args[1]])
-                         std::cout << c.first << std::endl;
-                 }
-            }
+        } else if (args[0] == "stores") {
+             if (correctArgs(args, 2))
+                findStores(chains, args[1]);
+
         } else if (args[0] == "selection") {
-             if (correctArgs(args, 3)) {
-                 if ( all.find(args[1]) == all.end() ) {
-                   std::cout << "Error: unknown chain name" << std::endl;
-                 } else if (all[args[1]].find(args[2]) == all[args[1]].end()){
-                   std::cout << "Error: unknown store" << std::endl;
-                 } else {
-                    for (auto c : all[args[1]][args[2]])
-                        std::cout << c.second.name << " " << c.second.price <<std::endl;
-                 }
-             }
+             if (correctArgs(args, 3))
+                findSelection(chains, args[1], args[2]);
+
         } else if (args[0] == "cheapest") {
              if (correctArgs(args, 2))
-                Findcheapest(all, args);
+                findCheapest(chains, args[1]);
 
         } else if (args[0] == "products") {
             if (correctArgs(args, 1))
-                findProducts(all);
+                findProducts(chains);
 
         }  else if (args[0] != "quit") {
              if (correctArgs(args, 1))
@@ -163,7 +168,7 @@ void menu( std::map< std::string,std::map < std::string, std::map <std::string, 
 int main() {
     std::string input = "products.input";
 
-    std::map< std::string,std::map < std::string, std::map <std::string, Product>> > all;
+    std::map< std::string,std::map < std::string, std::map <std::string, Product>> > chains;
 
     //std::cout << "Input file: ";
     //getline(cin, input);
@@ -177,11 +182,11 @@ int main() {
         std::string line;
         while (getline(file_object, line)){
             std::vector<std::string> strings = split(line, ';', true);
-            inputFile(all, strings);
+            inputFile(chains, strings);
         }
     }
 
-    menu(all);
+    menu(chains);
 
     return EXIT_SUCCESS;
 }

@@ -44,34 +44,41 @@ struct Product {
 
 void inputFile( std::map< std::string,std::map < std::string, std::map <std::string, Product>> > &all, const std::vector<std::string> &line) {
 
-
-    std::string store = line[0];
-    std::string location = line[1];
-    std::string product = line[2];
-    double price = 0;
-
+    double price = -1.0;
     if ( line[3] != "out-of-stock")
         price = stod(line[3]);
 
     Product pro;
-    pro.name = product;
+    pro.name = line[2];
     pro.price = price;
 
-    all.insert({store,{}});
-    all[store].insert({location,{}});
-    all[store][location].insert({product,pro});
+    //all.insert({line[0],{}});
+    //all[line[0]].insert({line[1],{}});
+    all[line[0]][line[1]].insert({line[2],pro});
+}
 
+void menu(std::map< std::string,std::map < std::string, std::map <std::string, Product>> > &all) {
 
+    std::string input;
+    while (input != "quit"){
+        std::cout << "> ";
+        getline(std::cin, input);
+        std::vector<std::string> args = split(input, ' ', true);
 
-   // if (price == 0){
-   //     std::cout << store << " " << location << " " << product << " out of stock" << std::endl;
-   // } else {
-   //     std::cout << store << " " << location << " " << product << " " << price << std::endl;
-   //  }
-
-
-
-
+        if (args[0] == "chains"){
+            std::cout << "here are the available store chains" << std::endl;
+        } else if (args[0] == "stores") {
+            std::cout << "here are the stores of a certain chain" << std::endl;
+        } else if (args[0] == "selection") {
+            std::cout << "here is the selection of a store" << std::endl;
+        } else if (args[0] == "cheapest") {
+            std::cout << "cheapest products of selected name" << std::endl;
+        } else if (args[0] == "products") {
+            std::cout << "here are all prodcuts there are" << std::endl;
+        }  else if (args[0] != "quit") {
+            std::cout << "Error: unknown command: " << args[0] << std::endl;
+        }
+    }
 }
 
 int main()
@@ -79,15 +86,6 @@ int main()
     std::string input = "products.input";
 
     std::map< std::string,std::map < std::string, std::map <std::string, Product>> > all;
-
-    // map with store name ( map with location name ( map with products)))
-    // store chain
-        // store location
-            // product
-                // name
-                // price
-
-    // std::vector<std::string> all_the_stuff;
 
     //std::cout << "Input file: ";
     //getline(cin, input);
@@ -104,10 +102,9 @@ int main()
             inputFile(all, strings);
         }
     }
-    // for (unsigned int i = 0; i < all.size(); i++){
-    //    std::cout  << i << std::endl;
-    // }
-    std::cout << all["Prisma"]["Lielahti"]["sausage"].name << " " << all["Prisma"]["Lielahti"]["sausage"].price << std::endl;
+
+    menu(all);
+    // std::cout << all["Prisma"]["Lielahti"]["sausage"].name << " " << all["Prisma"]["Lielahti"]["sausage"].price << std::endl;
 
     return EXIT_SUCCESS;
 }

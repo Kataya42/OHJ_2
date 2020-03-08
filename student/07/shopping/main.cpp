@@ -1,8 +1,9 @@
 /* Chain stores
  *
- * Desc:
+ * Descripion:
  *
- * Program lets user input a CSV file. Program will interpret that
+ * A Program that is used to manage a database containing
+ * information about product in stores. Program will interpret that
  * Information as listings of products with their store chain and location
  * Included. User then can using commands via the user interface.
  * Commands with their correct syntax are: "chain", "stores <chain_store>",
@@ -21,7 +22,7 @@
  *
  * The chosen data structure for this program is a three layer map
  * With the store chain pairs being the highest layer, then store pairs
- * Or their locations and finaly the product pairs. second values of the
+ * Or their locations and finaly the product pairs. Second values of the
  * Product pairs are structs named Product which contain the product name
  * And price information. Due to the way the program is implemented, when
  * When searching for product name you could either choose to take the
@@ -52,11 +53,12 @@ struct Product {
 typedef std::map< std::string, std::map< std::string , Product >> stores;
 
 /**
- * @brief Splits a string into parts into a vector
- * @param s, string to be split
- * @param delimeter, character to indicate where the split happens
- * @param ingnore_empty, boolean dictating are empty spaces ignored or not
- * @return result, vector containing split string in parts
+ * @brief Splits a string into a vector of its parts
+ * @param s, the string to be split
+ * @param delimeter, a character to indicate where the split happens
+ * @param ingnore_empty, a boolean value dictating whether
+ *        empty spaces ignored or not
+ * @return result, vector containing the split string
  */
 std::vector < std::string > split(const std::string & s,
     const char delimiter, bool ignore_empty = false) {
@@ -80,9 +82,10 @@ std::vector < std::string > split(const std::string & s,
 }
 
 /**
- * @brief from a vector, adds given elements into chains datastructure
- * @param chains, the nested map containing all information about store chains
- * @param line, vector of string containing information to be added.
+ * @brief Adds given elements into chains datastructure from a vector
+ * @param chains, the nested map containing all information
+ *        about the store chains and their products
+ * @param line, a vector of string containing information to be added
  */
 void inputFile(std::map < std::string, stores > & chains,
     const std::vector < std::string > & line) {
@@ -92,21 +95,30 @@ void inputFile(std::map < std::string, stores > & chains,
     if (line[3] != "out-of-stock")
         price = stod(line[3]);
 
-    Product prod = {
-        line[2],
-        price
-    };
+    // if the product is found
+    if (chains[line[0]][line[1]].find(line[2]) !=
+            chains[line[0]][line[1]].end()) {
+        // update its price
+        chains[line[0]][line[1]][line[2]].price = price;
 
-    chains[line[0]][line[1]].insert({
-        line[2],
-        prod
-    });
+    // else create a new product
+    } else {
+        Product prod = {
+            line[2],
+            price
+        };
+
+        chains[line[0]][line[1]].insert({
+            line[2],
+            prod
+        });
+    }
 }
 
 /**
  * @brief Checks does the given vector has as many elements as its supposed to
- * @param args, vector with all given arguments
- * @param correctNumber, unsigned int (1-3)
+ * @param args, a vector with all given arguments
+ * @param correctNumber, an unsigned int (1-3)
  * @return boolean whether amount of arguments was correct for given command
  */
 bool correctArgs(const std::vector < std::string > & args,
@@ -121,8 +133,9 @@ bool correctArgs(const std::vector < std::string > & args,
 }
 
 /**
- * @brief Prints all items in highest layer of chains (store chain names)
- * @param chains, the nested map containing all information about store chains
+ * @brief Prints all chain names found in chains
+ * @param chains, the nested map containing all information
+ *        about the store chains and their products
  */
 void findChains(const std::map < std::string, stores > & chains) {
 
@@ -134,13 +147,15 @@ void findChains(const std::map < std::string, stores > & chains) {
 }
 
 /**
- * @brief Prints all stores (or their locations) from given store chain
- * @param chains, the nested map containing all information about store chains
- * @param chain, string with the name of the chain
+ * @brief Prints all stores found in given chain
+ * @param chains, the nested map containing all information
+ *        about the store chains and their products
+ * @param chain, a string with the name of the chain
  */
 void findStores(std::map < std::string, stores > & chains,
     const std::string & chain) {
 
+    // if given chain name is not found
     if (chains.find(chain) == chains.end()) {
         std::cout << "Error: unknown chain name" << std::endl;
     } else {
@@ -154,18 +169,20 @@ void findStores(std::map < std::string, stores > & chains,
 
 /**
  * @brief Prints the entire selection of given store from given chain
- * @param chains, the nested map containing all information about store chains
- * @param chain, string with the name of the chain
- * @param store, string with the name of the store
+ * @param chains, the nested map containing all information
+ *        about the store chains and their products
+ * @param chain, a string with the name of the chain
+ * @param store, a string with the name of the store
  */
 void findSelection(std::map < std::string, stores > & chains,
     const std::string & chain,
         const std::string & store) {
 
-
+    // if given chain name is not found
     if (chains.find(chain) == chains.end()) {
         std::cout << "Error: unknown chain name" << std::endl;
 
+    // or if given store name is not found
     } else if (chains[chain].find(store) == chains[chain].end()) {
         std::cout << "Error: unknown store" << std::endl;
 
@@ -179,24 +196,27 @@ void findSelection(std::map < std::string, stores > & chains,
                              " out of stock" << std::endl;
 
             } else {
-                std::cout << productPair.second.name <<
-                             " " << productPair.second.price << std::endl;
+                std::cout << productPair.second.name << " " <<
+                          std::fixed <<  std::setprecision(2) <<
+                          productPair.second.price << std::endl;
+
             }
         }
     }
 }
 
 /**
- * @brief Finds out what is the cheapest price given product has, if any, then
+ * @brief Finds out what is the cheapest price a given product has, then
  *        prints that price, and all stores with that price on that product
- * @param chains, the nested map containing all information about store chains
- * @param product, string with the name of the product
+ * @param chains, the nested map containing all information
+ *        about the store chains and their products
+ * @param product, a string with the name of the product
  */
 void findCheapest(const std::map < std::string, stores > & chains,
     const std::string & product) {
 
     double cheapestPrice = __DBL_MAX__;
-    bool isNotInStock = false;
+    bool isFound = false;
 
     // finding the cheapest price for given product
     for (std::pair < std::string,
@@ -210,20 +230,24 @@ void findCheapest(const std::map < std::string, stores > & chains,
                     storePair.second[product].price < cheapestPrice) {
                 cheapestPrice = storePair.second[product].price;
 
+            // if the product exsists, but is out of stock
             } else if (storePair.second[product].price == OUT_OF_STOCK) {
-                isNotInStock = true;
+                isFound= true;
             }
         }
     }
 
-    if (cheapestPrice == __DBL_MAX__ && isNotInStock) {
+    // if product is only out of stock
+    if (cheapestPrice == __DBL_MAX__ && isFound) {
         std::cout << "The product is temporarily "
                      "out of stock everywhere" << std::endl;
 
+    // else if product does not exist
     } else if (cheapestPrice == __DBL_MAX__) {
         std::cout << "The product is not "
                      "part of product selection" << std::endl;
 
+    // else product is in stock
     } else {
         std::cout << std::fixed << std::setprecision(2)
                   << cheapestPrice << " euros" << std::endl;
@@ -233,8 +257,10 @@ void findCheapest(const std::map < std::string, stores > & chains,
         for (std::pair < std::string,
              stores > chainPair: chains) {
             for (std::pair < std::string,
-                 std::map < std::string, Product >> storePair: chainPair.second) {
+                 std::map < std::string, Product >> storePair:
+                 chainPair.second) {
 
+                // if store has given product at cheapest price
                 if (storePair.second[product].price == cheapestPrice) {
                     std::cout << chainPair.first <<
                                  " " << storePair.first << std::endl;
@@ -246,7 +272,8 @@ void findCheapest(const std::map < std::string, stores > & chains,
 
 /**
  * @brief Prints all products listed in all store chains ingoring dupicates
- * @param chains, the nested map containing all information about store chains
+ * @param chains, the nested map containing all information
+ *        about the store chains and their products
  */
 void findProducts(const std::map < std::string, stores > & chains) {
 
@@ -265,17 +292,25 @@ void findProducts(const std::map < std::string, stores > & chains) {
                             productPair.second.name) != foundItems.end())) {
 
                     foundItems.push_back(productPair.second.name);
-                    std::cout << productPair.second.name << std::endl;
+
                 }
             }
         }
     }
+
+    // printing done separately so they will be always in correct order
+    sort(foundItems.begin(), foundItems.end());
+
+    for (std::string product : foundItems)
+        std::cout << product << std::endl;
+
 }
 
 /**
  * @brief UI happens from this function, calls other fucntions depending
  *        on what command is written.
- * @param chains, the nested map containing all information about store chains
+ * @param chains, the nested map containing all information
+ *        about the store chains and their products
  */
 void menu(std::map < std::string, stores > & chains) {
 
@@ -318,6 +353,7 @@ void menu(std::map < std::string, stores > & chains) {
 int main() {
 
     std::string input;
+
     // Initialization said datastructure
     std::map < std::string,
             std::map < std::string,
@@ -329,7 +365,7 @@ int main() {
     std::ifstream file_object(input);
 
     if (not file_object) {
-        std::cout << "Error! The file cannot be opened." << std::endl;
+        std::cout << "Error: the input file cannot be opened" << std::endl;
         return EXIT_FAILURE;
 
     } else {

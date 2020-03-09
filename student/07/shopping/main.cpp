@@ -281,7 +281,8 @@ void findProducts(const std::map < std::string, stores > &chains) {
  *        about the store chains and their products
  */
 void menu(std::map < std::string, stores > &chains) {
-    std::string &input;
+
+    std::string input;
 
     while (input != "quit") {
 

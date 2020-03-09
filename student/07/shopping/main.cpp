@@ -2,14 +2,14 @@
  *
  * Descripion:
  *
- * A Program that is used to manage a database containing
+ * A program that is used to manage a database containing
  * information about products in stores. Program will interpret that
- * Information as listings of products with their store chain and location
- * Included. User then can using commands via the user interface.
+ * information as listings of products with their store chain and location
+ * included. User then can using commands via the user interface.
  * Commands with their correct syntax are: "chain", "stores <chain_store>",
  * "selection <chain_store> <store_location>", "cheapest <product_name>" and
  * "products". User can search for information from given file
- * Using these commands or quit the program using "quit".
+ * using these commands or quit the program using "quit".
  *
  *
  * Program author:
@@ -21,16 +21,16 @@
  * Notes about the program and it's implementation:
  *
  * The chosen data structure for this program is a three layer map
- * With the store chain pairs being the highest layer, then store pairs
- * Or their locations and finaly the product pairs. Second values of the
- * Product pairs are structs named Product which contain the product name
- * And price information. Due to the way the program is implemented, when
- * When searching for product name you could either choose to take the
+ * with the store chain pairs being the highest layer, then store pairs
+ * or their locations and finally the product pairs. Second values of the
+ * product pairs are structs named Product which contain the product name
+ * and price information. Due to the way the program is implemented, when
+ * searching for product name you could either choose to take the
  * product pairs key value or the name parameter of the Product struct
- * The "last" layer is a map and not a vector to make searching and
- * Input easier. User interface happens in the menu fuction while inputfile
- * Integrity checking happens in the main function. Each command is divided
- * Into its own function.
+ * the "last" layer is a map and not a vector to make searching and
+ * input easier. User interface happens in the menu fuction while inputfile
+ * integrity checking happens readFile function. Each command is divided
+ * into its own function.
  * */
 
 #include <algorithm>
@@ -67,8 +67,8 @@ typedef std::map < std::string, std::map < std::string, Product >> stores;
  *        empty spaces ignored or not
  * @return result, vector containing the split string
  */
-std::vector < std::string > split(const std::string & s,
-    const char delimiter, bool ignore_empty = false) {
+std::vector < std::string > split(const std::string &s,
+    const char &delimiter, bool ignore_empty = false) {
 
     std::vector < std::string > result;
     std::string tmp = s;
@@ -96,7 +96,7 @@ std::vector < std::string > split(const std::string & s,
  * @param correctNumber, an unsigned int (1-3)
  * @return boolean whether amount of arguments was correct for given command
  */
-bool correctArgs(const std::vector < std::string > & args,
+bool correctArgs(const std::vector < std::string > &args,
     const unsigned int & correctNumber) {
 
     if (args.size() == correctNumber) {
@@ -113,7 +113,7 @@ bool correctArgs(const std::vector < std::string > & args,
  *        about the store chains and their products
  */
 
-void findChains(const std::map < std::string, stores > & chains) {
+void findChains(const std::map < std::string, stores > &chains) {
 
     for (std::pair < std::string,
         stores > chainPair: chains) {
@@ -127,8 +127,8 @@ void findChains(const std::map < std::string, stores > & chains) {
  *        about the store chains and their products
  * @param chain, a string containing the name of the chain
  */
-void findStores(std::map < std::string, stores > & chains,
-    const std::string & chain) {
+void findStores(std::map < std::string, stores > &chains,
+    const std::string &chain) {
 
     // check if the given chain name is not in the database
     if (chains.find(chain) == chains.end()) {
@@ -150,8 +150,8 @@ void findStores(std::map < std::string, stores > & chains,
  * @param chain, a string containing the name of the chain
  * @param store, a string containing the name of the store
  */
-void findSelection(std::map < std::string, stores > & chains,
-    const std::string & chain, const std::string & store) {
+void findSelection(std::map < std::string, stores > &chains,
+    const std::string &chain, const std::string &store) {
 
     // check if the given chain name is not in the database
     if (chains.find(chain) == chains.end()) {
@@ -185,8 +185,8 @@ void findSelection(std::map < std::string, stores > & chains,
  *        about the store chains and their products
  * @param product, a string containing the name of the product
  */
-void findCheapest(const std::map < std::string, stores > & chains,
-    const std::string & product) {
+void findCheapest(const std::map < std::string, stores > &chains,
+    const std::string &product) {
 
     double cheapestPrice = __DBL_MAX__;
     bool isFound = false;
@@ -247,7 +247,7 @@ void findCheapest(const std::map < std::string, stores > & chains,
  * @param chains, the nested map containing all information
  *        about the store chains and their products
  */
-void findProducts(const std::map < std::string, stores > & chains) {
+void findProducts(const std::map < std::string, stores > &chains) {
 
     std::vector < std::string > foundItems;
 
@@ -280,8 +280,8 @@ void findProducts(const std::map < std::string, stores > & chains) {
  * @param chains, the nested map containing all information
  *        about the store chains and their products
  */
-void menu(std::map < std::string, stores > & chains) {
-    std::string input;
+void menu(std::map < std::string, stores > &chains) {
+    std::string &input;
 
     while (input != "quit") {
 
@@ -327,8 +327,8 @@ void menu(std::map < std::string, stores > & chains) {
  *        about the store chains and their products
  * @param line, a vector of string containing information to be added
  */
-void inputFile(std::map < std::string, stores > & chains,
-    const std::vector < std::string > & line) {
+void inputFile(std::map < std::string, stores > &chains,
+    const std::vector < std::string > &line) {
 
     double price = OUT_OF_STOCK;
 
@@ -360,7 +360,8 @@ void inputFile(std::map < std::string, stores > & chains,
  * @param input, a string containing the name of the input file
  * @return true or false depending on whether the file reading was sucsessful
  */
-bool readFile(std::map < std::string, stores > & chains, std::string & input) {
+bool readFile(std::map < std::string, stores > &chains,
+              const std::string &input) {
 
     std::ifstream file_object(input);
 

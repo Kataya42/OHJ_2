@@ -1,6 +1,4 @@
 #include "array_operations.hh"
-#include <iostream>
-using namespace std;
 
 
 int greatest_v1(int *itemptr, int size){
@@ -18,7 +16,7 @@ int greatest_v1(int *itemptr, int size){
 int greatest_v2(int *itemptr, int *endptr){
 
     int max = *itemptr;
-    while(*itemptr != *endptr){
+    while(itemptr != endptr){
         if (*itemptr > max) {
             max = *itemptr;
         }
@@ -30,7 +28,7 @@ int greatest_v2(int *itemptr, int *endptr){
 
 void copy(int *itemptr, int *endptr, int *targetptr){
 
-    while(*itemptr != *endptr){
+    while(itemptr != endptr){
         int max = *itemptr;
         *targetptr = max;
         itemptr++;

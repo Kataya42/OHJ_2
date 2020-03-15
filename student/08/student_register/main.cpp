@@ -83,13 +83,13 @@ bool is_valid_phone_number(const std::string number) {
 
 
 int main() {
-    std::string file_name = "";
+    std::string filu_name = "";
     std::cout << "Student file: ";
-    std::getline(std::cin, file_name);
+    std::getline(std::cin, filu_name);
 
     std::map< std::string, Student* > user_ids;
     std::map< std::string, Student* > student_numbers;
-    if(not read_data(file_name, user_ids, student_numbers)) {
+    if(not read_data(filu_name, user_ids, student_numbers)) {
         std::cout << "Error in reading file!" << std::endl;
         return EXIT_FAILURE;
     }
@@ -145,7 +145,7 @@ int main() {
 
 
                     std::ofstream file_name;
-                    file_name.open("data.txt");
+                    file_name.open(filu_name);
 
                     for (auto student : student_numbers){
                         file_name <<

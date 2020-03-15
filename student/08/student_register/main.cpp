@@ -134,8 +134,33 @@ int main() {
             if(parts.size() != 2){
                 std::cout << "Erroneous parameters!" << std::endl << HELP_TEXT;
                 continue;
-            }
-            // TODO: Add functionality here
+            } else {
+                std::string num;
+                std::cout << "Enter a new phone number: ";
+                getline(std::cin,num);
+
+                if (is_valid_phone_number(num)) {
+                    student_numbers[parts[1]]->phone_number = num;
+                    //std::cout << parts[0] << std::endl;
+
+
+                    std::ofstream file_name;
+                    file_name.open("data.txt");
+
+                    for (auto student : student_numbers){
+                        file_name <<
+                                     student_numbers[student.first]->student_number << ";" <<
+                                     student_numbers[student.first]->user_id << ";" <<
+                                     student_numbers[student.first]->name << ";" <<
+                                     student_numbers[student.first]->phone_number << ";" <<
+                                     student_numbers[student.first]->email << ";" <<
+                                     student_numbers[student.first]->skype << std::endl;
+                    }
+                    file_name.close();
+                } else {
+                    std::cout << "Erroneous phone number: " << num << std::endl;
+                    }
+                }
 
 
         } else if(command == "Q" or command == "q") {

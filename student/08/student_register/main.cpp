@@ -139,6 +139,8 @@ int main() {
                 std::cout << "Enter a new phone number: ";
                 getline(std::cin,num);
 
+                std::cout << std::endl;
+
                 if (is_valid_phone_number(num)) {
                     student_numbers[parts[1]]->phone_number = num;
                     //std::cout << parts[0] << std::endl;
@@ -147,18 +149,19 @@ int main() {
                     std::ofstream file_name;
                     file_name.open(filu_name);
 
-                    for (auto student : student_numbers){
+                    for (auto student : user_ids){
                         file_name <<
-                                     student_numbers[student.first]->student_number << ";" <<
-                                     student_numbers[student.first]->user_id << ";" <<
-                                     student_numbers[student.first]->name << ";" <<
-                                     student_numbers[student.first]->phone_number << ";" <<
-                                     student_numbers[student.first]->email << ";" <<
-                                     student_numbers[student.first]->skype << std::endl;
+                                     user_ids[student.first]->student_number << ";" <<
+                                     user_ids[student.first]->user_id << ";" <<
+                                     user_ids[student.first]->name << ";" <<
+                                     user_ids[student.first]->phone_number << ";" <<
+                                     user_ids[student.first]->email << ";" <<
+                                     user_ids[student.first]->skype << std::endl;
                     }
                     file_name.close();
                 } else {
                     std::cout << "Erroneous phone number: " << num << std::endl;
+                    std::cout << std::endl;
                     }
                 }
 

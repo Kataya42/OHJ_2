@@ -34,7 +34,7 @@ int main() {
     cout << endl;
 
     // point c
-    reverse(array, array + ITEM_NUMBER);
+    reverse(array, array + ITEM_NUMBER-1);
 
     for(int* position = array; position < array + ITEM_NUMBER; ++position){
         cout << *position << " ";

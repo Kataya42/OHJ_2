@@ -134,12 +134,14 @@ int main() {
             if(parts.size() != 2){
                 std::cout << "Erroneous parameters!" << std::endl << HELP_TEXT;
                 continue;
+
             } else {
                 std::string num;
                 std::cout << "Enter a new phone number: ";
                 getline(std::cin,num);
-
                 std::cout << std::endl;
+
+                std::cin.clear();
 
                 if (is_valid_phone_number(num)) {
                     student_numbers[parts[1]]->phone_number = num;
@@ -159,12 +161,8 @@ int main() {
                                      user_ids[student.first]->skype << std::endl;
                     }
                     file_name.close();
-                } else {
-                    std::cout << "Erroneous phone number: " << num << std::endl;
-                    std::cout << std::endl;
-                    }
                 }
-
+            }
 
         } else if(command == "Q" or command == "q") {
             // Deleting the data structure: deallocating memory and nullifying pointers

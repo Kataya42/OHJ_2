@@ -36,7 +36,7 @@ vector <string > split(const string &s,
 int calculate(int & a, int & b, string oper){
 
     int result;
-    if(oper == "/" && b == 0){
+    if(oper == "/" && a == 0){
         result = -99;
         return result;
     }
@@ -79,7 +79,7 @@ int main() {
     }
 
     int result = 0;
-    int a = 0;
+    int a = -3;
     // int b = 0;
     operators.pop_back();
 
@@ -101,7 +101,7 @@ int main() {
         reverse(numbers.begin(),numbers.end());
 
         for (unsigned int i = 0 ; i < operators.size(); i++){
-            if (a == 0){
+            if (a == -3){
                 a = calculate(numbers[i],numbers[i+1],operators[i]);
                 result = a;
 
@@ -115,6 +115,14 @@ int main() {
 
             } else {
                 result = calculate(a, numbers[i+1], operators[i]);
+
+                if (result == -99 ){
+                    cout << "Error: Division by zero" << endl;
+                    return EXIT_FAILURE;
+                } else if( result == __INT_MAX__){
+                    cout << "Error: Unknown character" << endl;
+                    return EXIT_FAILURE;
+                }
             }
 
         }

@@ -78,7 +78,7 @@ int main() {
         }
     }
 
-    int result;
+    int result = 0;
     int a = 0;
     // int b = 0;
     operators.pop_back();

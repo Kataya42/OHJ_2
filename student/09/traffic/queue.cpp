@@ -1,127 +1,119 @@
 #include "queue.hh"
 #include <iostream>
-#include <string>
-using namespace std;
 
 // Implement the member functions of Queue here
 
-Queue::Queue(unsigned int cycle) {
-    first_ = nullptr;
-    last_ = nullptr;
+Queue::Queue(unsigned int cycle)
+{
     cycle_ = cycle;
 }
 
-Queue::~Queue() {
+Queue::~Queue()
+{
+    Vehicle* sukkeli;
 
-}
+    while ( first_ != nullptr ) {
 
-void Queue::enqueue(string reg) {
+        sukkeli = first_;
+        first_ = first_->next;
 
-    if (is_green_){
-        cout << "The vehicle " << reg << " need not stop to wait" << endl;
-    } else {
-        Vehicle* new_car = new Vehicle{reg, nullptr};
-
-       if ( first_ == nullptr ) {
-          first_ = new_car;
-          last_ = new_car;
-       } else {
-          Vehicle* newc = first_;
-          first_ = new_car;
-          first_ -> next = newc;
-       }
+        delete sukkeli;
     }
 }
 
-void Queue::dequeue(){
+void Queue::enqueue(string reg)
+{
 
-    if ( first_ == nullptr) {
-        return;
-    } else if (first_ == last_) {
+    if (is_green_ == true) {
 
-        Vehicle * temp = first_;
-
-        temp = first_;
-        first_= first_->next;
-        free(temp);
+        std::cout << "GREEN: The vehicle " << reg << " need not stop to wait" << std::endl;
         return;
     }
 
-        Vehicle * temp_node = first_;
+    Vehicle* new_car = new Vehicle({reg, nullptr});
 
-        while (!(temp_node->next == last_)) {
-            temp_node = temp_node -> next;
-        }
+    if (last_ == nullptr && first_ == nullptr) {
 
-        last_ -> next = first_;
-        first_ = last_;
-        last_ = temp_node;
-        last_->next = nullptr;
+        first_ = new_car;
+        last_ = new_car;
+    }
 
-        Vehicle * temp = first_;
-        temp = first_;
-        first_= first_->next;
-        free(temp);
-}
-
-
-int Queue::recursive(Queue::Vehicle *first) {
-
-    if (first  == nullptr){
-           return false;
-        }
-
-    recursive(first->next);
-    cout << first->reg_num << " ";
-    return true;
-}
-
-void Queue::switch_light() {
-
-    if (!(is_green_)) {
-        print();
-    } else {
-        print();
-        unsigned int current_cycle = 0;
-        while (current_cycle < cycle_) {
-            dequeue();
-            ++current_cycle;
-
-        }
+    else {
+        last_->next = new_car;
+        last_ = new_car;
     }
 }
 
-void Queue::reset_cycle(unsigned int cycle) {
-    cycle_ = cycle;
-}
+void Queue::switch_light()
+{
+    (is_green_) ? (is_green_ = false) : (is_green_ = true);
 
-void Queue::print() {
+    if (is_green_ == true && first_ == nullptr) {
 
-    if ( first_ == nullptr && is_green_){
-           cout << "GREEN: No vehicles waiting in traffic lights" << endl;
-           is_green_ = false;
-           return;
-    } else if(first_ == nullptr){
-        cout << "RED: No vehicles waiting in traffic lights" << endl;
-        is_green_ = true;
-        return;
+        std::cout << "GREEN: No vehicles waiting in traffic lights" << std::endl;
     }
 
-    if (is_green_){
-       cout << "GREEN: Vehicle(s) ";
-    } else{
-       cout << "RED: Vehicle(s) ";
+    else if (is_green_ == false && first_ == nullptr) {
+
+        std::cout << "RED: No vehicles waiting in traffic lights" << std::endl;
     }
 
-    Vehicle* temp_node = first_;
-    recursive(temp_node);
+    else if (is_green_ == true) {
 
+        std::cout << "GREEN: Vehicle(s) ";
 
-    if (is_green_){
-        cout << "can go on" << endl;
+        for (unsigned int i = 0; i < cycle_; i++) {
+
+            Vehicle* current_first = first_;
+
+            std::cout << current_first->reg_num << " ";
+
+            if ( first_ == last_ ) {
+                first_ = nullptr;
+                last_ = nullptr;
+                delete current_first;
+                break;
+            }
+
+            first_ = current_first->next;
+
+            delete current_first;
+        }
+
+        std::cout << "can go on" << std::endl;
+
         is_green_ = false;
-    } else {
-        cout << "waiting in traffic lights" << endl;
-        is_green_ = true;
+    }
+
+}
+
+void Queue::reset_cycle(unsigned int cycle)
+{
+    cycle_ = cycle;
+}
+
+void Queue::print()
+{
+    if (is_green_ == true && first_ == nullptr) {
+
+        std::cout << "GREEN: No vehicles waiting in traffic lights" << std::endl;
+    }
+
+    else if (is_green_ == false && first_ == nullptr) {
+
+        std::cout << "RED: No vehicles waiting in traffic lights" << std::endl;
+    }
+
+    else if (is_green_ == false) {
+
+        std::cout << "RED: Vehicle(s) ";
+        Vehicle* next_car = first_;
+
+        while ( next_car != nullptr ) {
+            std::cout << next_car->reg_num << " ";
+            next_car = next_car->next;
+        }
+
+        std::cout << "waiting in traffic lights" << std::endl;
     }
 }

@@ -18,7 +18,6 @@ public:
     // Inserts a vehicle, the register number of which is reg, to the queue.
     void enqueue(string reg);
 
-
     // Switches the color of traffic light from green to red or vice versa.
     // If the new color is green, lets at least <cycle_> vehicles
     // go on (i.e. calls dequeue at least <cycle_> times), and finally
@@ -51,9 +50,6 @@ private:
     // The number of vehicles that can pass the traffic lights during
     // the same green period
     unsigned int cycle_;
-
-    void dequeue();
-    int recursive(Queue::Vehicle *first);
 
     // You can define more private features here
 

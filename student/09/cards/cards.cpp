@@ -33,14 +33,16 @@ void Cards::add(int id) {
 }
 
 void Cards::print_from_top_to_bottom(std::ostream &s) {
+    if ( top_ == nullptr )
+        return;
 
-    Card_data* item_to_be_printed = top_;
+    Card_data* temp = top_;
     int running_number = 1;
 
-    while ( item_to_be_printed != nullptr ) {
-       s << running_number << ". " << item_to_be_printed->data << endl;
+    while ( temp != nullptr ) {
+       s << running_number << ". " << temp->data << endl;
+       temp = temp ->next;
        ++running_number;
-       item_to_be_printed = item_to_be_printed->next;
     }
 }
 

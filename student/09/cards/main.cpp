@@ -20,6 +20,8 @@ int main() {
         deck.add(i);
     }
 
+    //deck.remove(n);
+
     cout << endl << "print_from_top_to_bottom" << endl;
     deck.print_from_top_to_bottom(cout);
 

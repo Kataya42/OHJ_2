@@ -45,6 +45,7 @@ class Cards {
       };
 
       Card_data* top_;
+      Card_data* bottom_;
 
       // You can use the function below in the implementation of
       // the method print_from_bottom_to_top.

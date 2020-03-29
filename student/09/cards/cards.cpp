@@ -3,11 +3,18 @@ using namespace std;
 // TODO: Implement the methods here
 
 Cards::Cards(): top_(nullptr) {
+    top_ = nullptr;
+    bottom_ = nullptr;
 
 }
 
 Cards::~Cards() {
+    while ( top_ != nullptr) {
+        Card_data* item = top_;
+        top_ = top_ ->next;
 
+        delete item;
+    }
 }
 
 void Cards::add(int id) {
@@ -52,19 +59,52 @@ bool Cards::remove(int &id) {
 }
 
 bool Cards::bottom_to_top() {
+    if (top_ == nullptr || bottom_ == top_)
+        return false;
 
+    Card_data * temp = top_;
+
+    while( ! (temp->next == bottom_))
+        temp = temp ->next;
+
+    bottom_ -> next = top_;
+    top_ = bottom_;
+    bottom_ = temp;
+    bottom_ -> next = nullptr;
+
+    return true;
 }
 
 bool Cards::top_to_bottom() {
+    if (top_ == nullptr || bottom_ == top_)
+        return false;
 
+    bottom_ -> next = top_;
+    bottom_ = top_;
+    top_ = bottom_ -> next;
+    bottom_ -> next = nullptr;
+
+    return true;
 }
 
 void Cards::print_from_bottom_to_top(std::ostream &s) {
 
+    if (top_ == nullptr)
+        return;
+
+    Card_data* temp = top_;
+    recursive_print(temp, s);
+
 }
 
-
-
+static int num = 1;
 int Cards::recursive_print(Cards::Card_data *top, std::ostream &s) {
 
+    if (top == nullptr)
+        return false;
+
+    recursive_print(top->next,s);
+    s << num << ": " << top->data << endl;
+    num++;
+    return true;
 }

@@ -21,6 +21,9 @@ int main() {
         deck.add(i);
     }
 
+    deck.remove(n);
+    deck.remove(n);
+    deck.remove(n);
     cout << endl << "print" << endl;
     deck.print(cout);
 

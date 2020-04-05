@@ -4,8 +4,6 @@
 #include <sstream>  // for implementing function string_to_double
 #include <string>
 #include <vector>
-#include <boost/algorithm/string.hpp>
-
 
 using namespace std;
 
@@ -92,7 +90,8 @@ int main() {
 
         bool found = false;
         string command_to_be_executed = pieces.at(0);
-        boost::to_upper(command_to_be_executed);
+        for (auto & c: command_to_be_executed) c = toupper(c);
+
         //cout << command_to_be_executed << endl;
         for (auto a : COMMANDS){
             if (a.str == command_to_be_executed){

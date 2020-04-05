@@ -4,6 +4,8 @@
 #include <sstream>  // for implementing function string_to_double
 #include <string>
 #include <vector>
+#include <boost/algorithm/string.hpp>
+
 
 using namespace std;
 
@@ -36,6 +38,7 @@ const vector<Command> COMMANDS = {
     {"-", 2, false, subtraction},
     {"*", 2, false, multiplication},
     {"/", 2, false, division},
+    {"^", 2, false, power},
     {"PLUS", 2, false, addition},
     {"MINUS", 2, false, subtraction},
     {"TIMES", 2, false, multiplication},
@@ -54,6 +57,8 @@ const vector<Command> COMMANDS = {
     {"DECREASE", 2, false, subtraction},
     {"MULTIPLY", 2, false, multiplication},
     {"DIVIDE", 2, false, division},
+    {"POWER", 2, false, power},
+    {"EXP", 2, false, power},
     {"STOP", 0, true, nullptr},
     {"QUIT", 0, true, nullptr},
     {"EXIT", 0, true, nullptr},
@@ -85,8 +90,36 @@ int main() {
             continue;
         }
 
+        bool found = false;
         string command_to_be_executed = pieces.at(0);
+        boost::to_upper(command_to_be_executed);
+        //cout << command_to_be_executed << endl;
+        for (auto a : COMMANDS){
+            if (a.str == command_to_be_executed){
+                found = true;
+                if (a.parameter_number == pieces.size()-1){
+                    if (a.exit == true){
+                        cout << GREETING_AT_END << endl;
+                        return EXIT_SUCCESS;
+                    } else {
+                        double first;
+                        double second;
+                        if (string_to_double(pieces[1],first) && string_to_double(pieces[2],second)){
+                            double result = a.action(first, second);
+                            cout << result << endl;
+                        } else {
+                            cout << "Error: a non-number operand." << endl;
+                        }
+                    }
 
+                } else {
+                    cout << "Error: wrong number of parameters." << endl;
+                }
+            }
+        }
+        if(not found) {
+             cout << "Error: unknown command." << endl;
+        }
         // TODO: Implement command execution here!
 
     }

@@ -39,6 +39,7 @@ public:
     void print();
     void print_students();
     bool is_named(std::string name);
+    void add_student(Account *student, Date today);
 
 private:
     std::string name_;

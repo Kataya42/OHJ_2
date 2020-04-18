@@ -112,7 +112,25 @@ void University::add_instance(Params params)
 
 void University::sign_up_on_course(Params params)
 {
+    if ( courses_.find(params.at(0)) == courses_.end() ){
+        std::cout << CANT_FIND << params.at(0) << std::endl;
+        return;
+    }
 
+    if (not( courses_.at(params.at(0))->has_instance(params.at(1)))){
+        std::cout << CANT_FIND << params.at(1) << std::endl;
+        return;
+    }
+
+    std::map<int, Account*>::iterator iter = accounts_.find(std::stoi(params.at(2)));
+    if ( iter == accounts_.end() ){
+        std::cout << CANT_FIND << params.at(2) << std::endl;
+        return;
+    }
+
+
+    accounts_.at(std::stoi(params.at(2)))->add_instance(courses_.at(params.at(0))->get_instance(params.at(1)));
+    courses_.at(params.at(0))->get_instance(params.at(1))->add_student(accounts_.at(std::stoi(params.at(2))), utils::today);
 }
 
 void University::complete_course(Params params)

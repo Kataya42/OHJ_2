@@ -42,6 +42,7 @@ public:
      * @return email linked to this account
      */
     std::string get_email();
+    void add_instance(Instance* inst);
 
 private:
     std::string full_name_;

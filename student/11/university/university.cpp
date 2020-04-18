@@ -100,7 +100,12 @@ void University::add_instance(Params params)
         return;
     }
 
-    Instance *n_instance = new Instance(courses_.at(params.at(0)), params.at(1));
+    if (courses_.at(params.at(0))->has_instance(params.at(1))){
+            std::cout << INSTANCE_EXISTS << std::endl;
+            return;
+    }
+
+    Instance *n_instance = new Instance(utils::today, courses_.at(params.at(0)), params.at(1));
     courses_.at(params.at(0))->new_instance(n_instance);
 
 }
@@ -117,11 +122,17 @@ void University::complete_course(Params params)
 
 void University::print_signups(Params params)
 {
+    if ( courses_.find(params.at(0)) == courses_.end() ){
+        std::cout << CANT_FIND << params.at(0) << std::endl;
+        return;
+    }
 
+    courses_.at(params.at(0))->print_signups();
 }
 
 void University::print_study_state(Params params)
 {
+
 
 }
 

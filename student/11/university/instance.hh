@@ -2,10 +2,16 @@
  * ----------
  * TIE-02201/TIE-02207 SPRING 2020
  * ----------
- * Class that represent a single instance.
+ * Class that represent a single instance of a course.
  *
- * Note: Students should make changes to this class, and add their info and
- * specifics of the class to this comment.
+ * Program author:
+ * Name: Aleksi Rissa
+ * Student number: 292053
+ * UserID: xfalri
+ * E-Mail: aleksi.rissa@tuni.fi
+ *
+ * Notes about the program and it's implementation:
+ *
  * */
 #ifndef INSTANCE_HH
 #define INSTANCE_HH
@@ -27,9 +33,13 @@ const std::string INDENT = "    ";
 class Instance
 {
 public:
-    Instance();
+    Instance(Course *course, std::string name);
+    void print();
+    void print_students();
+    bool is_named(std::string name);
 private:
-
+    std::string name_;
+    Course* main_;
 };
 
 #endif // INSTANCE_HH

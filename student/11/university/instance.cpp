@@ -3,7 +3,7 @@
 
 Instance::Instance(Date today, Course *course, std::string name)
 {
-    main_ = course;
+    parent_course_ = course;
     name_ = name;
     started_ = today;
 
@@ -36,25 +36,29 @@ bool Instance::is_named(std::string name )
 
 }
 
-bool Instance::add_student(Account *student, Date today)
+void Instance::add_student(Account *student, Date today)
 {
 
     if (std::find(students_.begin(), students_.end(), student) != students_.end()){
         std::cout << ALREADY_REGISTERED << std::endl;
-        return false;
+
 
     } else if (started_ < today){
         std::cout << LATE << std::endl;
-        return false;
 
     } else {
+        student->add_instance(this);
         students_.push_back(student);
-        return true;
     }
 }
 
-void Instance::remove_student(Account *student)
+std::string Instance::get_name()
 {
-    students_.erase(std::remove(students_.begin(), students_.end(), student), students_.end());
+    return name_;
+}
+
+Course *Instance::get_course()
+{
+    return parent_course_;
 }
 

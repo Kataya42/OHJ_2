@@ -45,7 +45,7 @@ public:
      */
     std::string get_email();
     void add_instance(Instance* inst);
-    bool complete_course(Instance* inst, Course* course);
+    void complete_course(Instance* inst);
     void print_complete();
     void print_current();
 

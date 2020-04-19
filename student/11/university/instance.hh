@@ -39,12 +39,13 @@ public:
     void print();
     void print_students();
     bool is_named(std::string name);
-    bool add_student(Account *student, Date today);
-    void remove_student(Account *student);
-    std::string name_;
-    Course* main_;
+    void add_student(Account *student, Date today);
+    std::string get_name();
+    Course* get_course();
 
 private:
+    std::string name_;
+    Course* parent_course_;
     Date started_= utils::today;
     std::vector<Account*> students_;
 

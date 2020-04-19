@@ -19,7 +19,6 @@ void Instance::print()
 
 void Instance::print_students()
 {
-
     for (auto student : students_){
         std::cout << INDENT;
         student->print();
@@ -37,18 +36,25 @@ bool Instance::is_named(std::string name )
 
 }
 
-void Instance::add_student(Account *student, Date today)
+bool Instance::add_student(Account *student, Date today)
 {
 
     if (std::find(students_.begin(), students_.end(), student) != students_.end()){
         std::cout << ALREADY_REGISTERED << std::endl;
+        return false;
 
     } else if (started_ < today){
         std::cout << LATE << std::endl;
+        return false;
 
     } else {
         students_.push_back(student);
+        return true;
     }
-
-
 }
+
+void Instance::remove_student(Account *student)
+{
+    students_.erase(std::remove(students_.begin(), students_.end(), student), students_.end());
+}
+

@@ -14,6 +14,8 @@
 #include <map>
 #include <iostream>
 
+const int CREDIT = 5; // credits per couse
+
 class Instance;
 class Course;
 
@@ -43,6 +45,9 @@ public:
      */
     std::string get_email();
     void add_instance(Instance* inst);
+    bool complete_course(Instance* inst, Course* course);
+    void print_complete();
+    void print_current();
 
 private:
     std::string full_name_;

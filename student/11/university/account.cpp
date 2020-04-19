@@ -52,7 +52,6 @@ bool Account::complete_course(Instance *inst, Course *course)
 void Account::print_complete()
 {
     int running_number = 0;
-    std::cout << "Completed:" << std::endl;
     for (auto course : completed_){
         course->print_info(true);
         running_number ++;
@@ -67,5 +66,6 @@ void Account::print_current()
         instance->main_->print_info(false);
         std::cout << " " << instance->name_ << std::endl;
     }
+    std::cout << "Completed:" << std::endl;
     print_complete();
 }

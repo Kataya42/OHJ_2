@@ -8,13 +8,13 @@ Account::Account(std::string full_name, std::string email, int account_number):
     last_name_(""),
     first_name_(""),
     email_(email),
-    account_number_(account_number)
+    account_number_(account_number),
+    credits_(0)
 {
     std::vector<std::string> name = utils::split(full_name_, ' ');
     last_name_ = name.back();
     first_name_ = name.front();
 }
-
 
 void Account::print() const
 {
@@ -29,42 +29,52 @@ std::string Account::get_email()
     return email_;
 }
 
-void Account::add_instance(Instance *inst)
+void Account::add_to_current(Instance *instance)
 {
-    current_.push_back(inst);
+    current_.push_back(instance);
     std::cout << SIGNED_UP << std::endl;
 }
 
-void Account::complete_course(Instance *inst)
+void Account::complete_course(Instance *instance)
 {
-    if (!(std::find(current_.begin(), current_.end(), inst) != current_.end())){
-            std::cout << NO_SIGNUPS<< std::endl;
+    // if course instance is not currently ongoing
+    if ( !(std::find(current_.begin(),
+                     current_.end(), instance) != current_.end()) ){
+
+        std::cout << NO_SIGNUPS << std::endl;
 
     } else {
+        completed_.push_back(instance->get_course());
+        current_.erase(std::remove(current_.begin(),
+                                   current_.end(), instance), current_.end());
 
-        completed_.push_back(inst->get_course());
-        current_.erase(std::remove(current_.begin(), current_.end(), inst), current_.end());
         std::cout << COMPLETED << std::endl;
+
+        credits_ += instance->get_course()->get_credits();
+
     }
 }
 
 void Account::print_complete()
 {
-    int running_number = 0;
-    for (auto course : completed_){
+    // for courses that have been completed
+    for ( auto course : completed_ ){
         course->print_info(true);
-        running_number ++;
     }
-    std::cout << "Total credits: " << running_number * CREDIT << std::endl;
+
+    std::cout << "Total credits: " << credits_ << std::endl;
 }
 
 void Account::print_current()
 {
     std::cout << "Current:" << std::endl;
-    for (auto instance : current_){
+
+    // for course instances that are currently ongoing
+    for ( auto instance : current_ ){
         instance->get_course()->print_info(false);
         std::cout << " " << instance->get_name() << std::endl;
     }
+
     std::cout << "Completed:" << std::endl;
     print_complete();
 }

@@ -99,15 +99,16 @@ void University::add_instance(Params params)
         std::cout << CANT_FIND << params.at(0) << std::endl;
         return;
     }
-
-    if (courses_.at(params.at(0))->has_instance(params.at(1))){
-            std::cout << INSTANCE_EXISTS << std::endl;
-            return;
+    // if given instance already exists
+    if ( courses_.at(params.at(0))->has_instance(params.at(1)) ){
+        std::cout << INSTANCE_EXISTS << std::endl;
+        return;
     }
 
-    Instance *n_instance = new Instance(utils::today, courses_.at(params.at(0)), params.at(1));
-    courses_.at(params.at(0))->new_instance(n_instance);
+    Instance * n_instance =
+        new Instance(utils::today, courses_.at(params.at(0)), params.at(1));
 
+    courses_.at(params.at(0))->new_instance(n_instance);
 }
 
 void University::sign_up_on_course(Params params)
@@ -116,19 +117,18 @@ void University::sign_up_on_course(Params params)
         std::cout << CANT_FIND << params.at(0) << std::endl;
         return;
     }
-
-    if (not( courses_.at(params.at(0))->has_instance(params.at(1)))){
+    // if specific instance belonging to given course does not exist
+    if ( !( courses_.at(params.at(0))->has_instance(params.at(1))) ){
         std::cout << CANT_FIND << params.at(1) << std::endl;
         return;
     }
-
     if ( accounts_.find(std::stoi(params.at(2))) == accounts_.end() ){
         std::cout << CANT_FIND << params.at(2) << std::endl;
         return;
     }
 
-    courses_.at(params.at(0))->get_instance(params.at(1))->add_student(accounts_.at(std::stoi(params.at(2))), utils::today);
-
+    courses_.at(params.at(0))->get_instance(params.at(1))->
+            add_student(accounts_.at(std::stoi(params.at(2))), utils::today);
 }
 
 void University::complete_course(Params params)
@@ -137,8 +137,7 @@ void University::complete_course(Params params)
         std::cout << CANT_FIND << params.at(0) << std::endl;
         return;
     }
-
-    if (not( courses_.at(params.at(0))->has_instance(params.at(1)))){
+    if ( !( courses_.at(params.at(0))->has_instance(params.at(1))) ){
         std::cout << CANT_FIND << params.at(1) << std::endl;
         return;
     }
@@ -148,8 +147,8 @@ void University::complete_course(Params params)
         return;
     }
 
-    accounts_.at(std::stoi(params.at(2)))->complete_course(courses_.at(params.at(0))->get_instance(params.at(1)));
-
+    accounts_.at(std::stoi(params.at(2)))->
+        complete_course(courses_.at(params.at(0))->get_instance(params.at(1)));
 }
 
 void University::print_signups(Params params)
@@ -164,15 +163,12 @@ void University::print_signups(Params params)
 
 void University::print_study_state(Params params)
 {
-
     if ( accounts_.find(std::stoi(params.at(0))) == accounts_.end() ){
         std::cout << CANT_FIND << params.at(0) << std::endl;
         return;
-
     }
+
     accounts_.at(std::stoi(params.at(0)))->print_current();
-
-
 }
 
 void University::print_completed(Params params)

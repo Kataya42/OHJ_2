@@ -14,8 +14,6 @@
 #include <map>
 #include <iostream>
 
-const int CREDIT = 5; // credits per couse
-
 class Instance;
 class Course;
 
@@ -44,9 +42,31 @@ public:
      * @return email linked to this account
      */
     std::string get_email();
-    void add_instance(Instance* inst);
-    void complete_course(Instance* inst);
+    /**
+     * @brief add_to_current
+     * @param Instance: pointer to instance
+     * Adds course instance into current_
+     */
+    void add_to_current(Instance* instance);
+    /**
+     * @brief complete_course
+     * @param Instance: pointer to instance
+     * Checks and gives an error if user is not in given course
+     * instance, else removes course instance from current_ and
+     * adds course into completed_ and prints successful course
+     * complted message. Also updates account credit score.
+     */
+    void complete_course(Instance* instance);
+    /**
+     * @brief print_complete
+     * Prints information on all complete courses
+     */
     void print_complete();
+    /**
+     * @brief print_current
+     * Prints information on all current course instances
+     * also calls print_complete() to print its information.
+     */
     void print_current();
 
 private:
@@ -57,6 +77,8 @@ private:
     const int account_number_;
     std::vector<Instance*> current_;
     std::vector<Course*> completed_;
+    // total credits
+    int credits_;
 };
 
 #endif // ACCOUNT_HH

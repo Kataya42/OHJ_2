@@ -7,6 +7,7 @@ class Giraffe: public Mammal
 public:
     Giraffe();
     void make_noise(std::ostream& output) const;
+    std::string moving_noise_ = "Kip kop kip kop";
 };
 
 

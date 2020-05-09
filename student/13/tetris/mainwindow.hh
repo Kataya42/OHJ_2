@@ -8,6 +8,7 @@
 #include <random>
 #include <QTimer>
 #include <QKeyEvent>
+#include <vector>
 
 namespace Ui {
 class MainWindow;
@@ -76,6 +77,7 @@ private:
     std::uniform_int_distribution<int> distr;
 
     void dropStuff();
+    std::vector<QGraphicsRectItem*> blocks_;
     // More constants, attibutes, and methods
 };
 

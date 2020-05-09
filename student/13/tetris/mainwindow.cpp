@@ -59,7 +59,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_dropButton_clicked()
 {
-    timer_.start(50);
+    timer_.start(40);
     dropStuff();
 
 }
@@ -73,24 +73,35 @@ void MainWindow::dropStuff()
 
     qreal deltaY;
 
-
     deltaY = static_cast<qreal>(STEP);  // down (positive step)
-
-
     current_y += deltaY;
-
     QRectF rect = scene_->sceneRect();
+    bool stop = false;
 
     if(rect.contains(4,current_y)){ // HOW DO I FIX THIS PROPERLY DONT FORGET
-        circle_->moveBy(0, deltaY);
+
+        for (auto block : blocks_){
+            qreal test_y = block->y();
+            qreal test_x = block->x();
+            if (test_y == current_y && test_x == current_x){
+                blocks_.push_back(circle_);
+
+                timer_.stop();
+                QBrush redBrush(Qt::blue);
+                QPen blackPen(Qt::black);
+                blackPen.setWidth(2);
+                circle_ = scene_->addRect(0, 0, STEP, STEP, blackPen, redBrush);
+                stop = true;
+            }
+        }
+
+        if (!(stop)){
+                circle_->moveBy(0, deltaY);
+        }
     } else {
 
-
-        //QList<QGraphicsItem*> cItems = collidingItems();
+        blocks_.push_back(circle_);
         timer_.stop();
-
-
-
         QBrush redBrush(Qt::blue);
         QPen blackPen(Qt::black);
         blackPen.setWidth(2);
@@ -103,32 +114,51 @@ void MainWindow::dropStuff()
 
 void MainWindow::on_RightpushButton_clicked()
 {
-    {
-        qreal current_x = circle_->x();
-        qreal deltaX;
 
-        deltaX = static_cast<qreal>(STEP);  // RIGHT
-        current_x += deltaX;
-        QRectF rect = scene_->sceneRect();
+    qreal current_y = circle_->y();
+    qreal current_x = circle_->x();
+    qreal deltaX;
 
-        if(rect.contains(current_x, 4)) // HOW DO I FIX THIS PROPERLY DONT FORGET
-            circle_->moveBy(deltaX, 0);
+    deltaX = static_cast<qreal>(STEP);  // RIGHT
+    current_x += deltaX;
+    QRectF rect = scene_->sceneRect();
 
+    bool moveable = true;
+
+    for (auto block : blocks_){
+        qreal test_y = block->y();
+        qreal test_x = block->x();
+        if (test_y == current_y && test_x == current_x){
+            moveable = false;
+        }
     }
+
+    if(rect.contains(current_x, 4) && moveable) // HOW DO I FIX THIS PROPERLY DONT FORGET
+        circle_->moveBy(deltaX, 0);
 }
 
 void MainWindow::on_leftPushButton_clicked()
 {
-    {
-        qreal current_x = circle_->x();
-        qreal deltaX;
 
-        deltaX = static_cast<qreal>(-STEP);  // LEFT
-        current_x += deltaX;
-        QRectF rect = scene_->sceneRect();
+    qreal current_y = circle_->y();
+    qreal current_x = circle_->x();
+    qreal deltaX;
 
-        if(rect.contains(current_x, 4)) // HOW DO I FIX THIS PROPERLY DONT FORGET
-            circle_->moveBy(deltaX, 0);
+    deltaX = static_cast<qreal>(-STEP);  // RIGHT
+    current_x += deltaX;
+    QRectF rect = scene_->sceneRect();
 
+    bool moveable = true;
+
+    for (auto block : blocks_){
+        qreal test_y = block->y();
+        qreal test_x = block->x();
+        if (test_y == current_y && test_x == current_x){
+            moveable = false;
+        }
     }
+
+    if(rect.contains(current_x, 4) && moveable) // HOW DO I FIX THIS PROPERLY DONT FORGET
+        circle_->moveBy(deltaX, 0);
 }
+

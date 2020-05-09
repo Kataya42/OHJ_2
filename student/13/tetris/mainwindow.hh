@@ -5,6 +5,7 @@
 #include <QGraphicsView>
 #include <QGraphicsScene>
 #include <QGraphicsRectItem>
+#include <QGraphicsItem>
 #include <random>
 #include <QTimer>
 #include <QKeyEvent>
@@ -29,11 +30,15 @@ private slots:
 
     void on_leftPushButton_clicked();
 
+    void on_pushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 
     QGraphicsScene* scene_;
     QGraphicsRectItem* circle_;
+
+    QGraphicsItem* why_;
     //QGraphicsEllipseItem* circle2_;
     QTimer timer_;
 
@@ -78,6 +83,8 @@ private:
 
     void dropStuff();
     std::vector<QGraphicsRectItem*> blocks_;
+    std::vector<QGraphicsRectItem*> active_;
+    void builder();
     // More constants, attibutes, and methods
 };
 

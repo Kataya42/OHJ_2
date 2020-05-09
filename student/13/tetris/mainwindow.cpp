@@ -31,11 +31,11 @@ MainWindow::MainWindow(QWidget *parent) :
     // if its upper left corner is inside the sceneRect.
     scene_->setSceneRect(0, 0, BORDER_RIGHT - 1, BORDER_DOWN - 1);
 
-    QBrush redBrush(Qt::red);
-    QPen blackPen(Qt::black);
-    blackPen.setWidth(2);
+    //QBrush redBrush(Qt::red);
+    //QPen blackPen(Qt::black);
+    //blackPen.setWidth(2);
 
-    circle_ = scene_->addRect(0, 0, STEP, STEP, blackPen, redBrush);
+    //circle_ = scene_->addRect(0, 0, STEP, STEP, blackPen, redBrush);
 
     timer_.setSingleShot(false);
     connect(&timer_, &QTimer::timeout, this, &MainWindow::dropStuff);
@@ -66,64 +66,85 @@ void MainWindow::on_dropButton_clicked()
 
 void MainWindow::dropStuff()
 {
-
-
-    qreal current_y = circle_->y();
-    qreal current_x = circle_->x();
+    bool valid = true;
+    for (auto c : active_){
+    qreal current_y = c->y();
+    qreal current_x = c->x();
 
     qreal deltaY;
 
     deltaY = static_cast<qreal>(STEP);  // down (positive step)
     current_y += deltaY;
-    QRectF rect = scene_->sceneRect();
-    bool stop = false;
 
-    if(rect.contains(4,current_y)){ // HOW DO I FIX THIS PROPERLY DONT FORGET
 
+    if (current_y <= 460){
         for (auto block : blocks_){
             qreal test_y = block->y();
             qreal test_x = block->x();
-            if (test_y == current_y && test_x == current_x){
-                blocks_.push_back(circle_);
 
+            if (test_y == current_y && test_x == current_x){
                 timer_.stop();
-                QBrush redBrush(Qt::blue);
-                QPen blackPen(Qt::black);
-                blackPen.setWidth(2);
-                circle_ = scene_->addRect(0, 0, STEP, STEP, blackPen, redBrush);
-                stop = true;
+                valid = false;
+
             }
         }
 
-        if (!(stop)){
-                circle_->moveBy(0, deltaY);
-        }
     } else {
-
-        blocks_.push_back(circle_);
         timer_.stop();
-        QBrush redBrush(Qt::blue);
-        QPen blackPen(Qt::black);
-        blackPen.setWidth(2);
+        valid = false;
+        }
+    }
+
+    if (valid){
+        for (auto c : active_){
+            qreal current_y = c->y();
+
+            qreal deltaY;
+
+            deltaY = static_cast<qreal>(STEP);  // down (positive step)
+            current_y += deltaY;
+            c->moveBy(0, deltaY);
+        }
+
+    } else {
+        for (auto c : active_){
+            blocks_.push_back(c);
+            }
+        active_.clear();
+        builder();
+
+    }
+}
+
+void MainWindow::builder()
+{
+    QBrush redBrush(Qt::red);
+    QPen blackPen(Qt::black);
+    blackPen.setWidth(2);
+
+    for (int i=0; i<4; i++){
         circle_ = scene_->addRect(0, 0, STEP, STEP, blackPen, redBrush);
-
-
+        circle_->moveBy(i*STEP+40, 0);
+        active_.push_back(circle_);
     }
 
 }
 
 void MainWindow::on_RightpushButton_clicked()
 {
+    bool moveable = true;
 
-    qreal current_y = circle_->y();
-    qreal current_x = circle_->x();
+    for (auto c : active_){
+    qreal current_y = c->y();
+    qreal current_x = c->x();
     qreal deltaX;
 
     deltaX = static_cast<qreal>(STEP);  // RIGHT
     current_x += deltaX;
-    QRectF rect = scene_->sceneRect();
 
-    bool moveable = true;
+    if(current_x >= 240){
+        moveable = false;
+    }
 
     for (auto block : blocks_){
         qreal test_y = block->y();
@@ -133,22 +154,35 @@ void MainWindow::on_RightpushButton_clicked()
         }
     }
 
-    if(rect.contains(current_x, 4) && moveable) // HOW DO I FIX THIS PROPERLY DONT FORGET
-        circle_->moveBy(deltaX, 0);
+
+    }
+
+    if (moveable){
+         for (auto c : active_){
+             qreal deltaX;
+
+             deltaX = static_cast<qreal>(STEP);  // RIGHT
+              c->moveBy(deltaX, 0);
+         }
+    }
+
 }
 
 void MainWindow::on_leftPushButton_clicked()
 {
+    bool moveable = true;
 
-    qreal current_y = circle_->y();
-    qreal current_x = circle_->x();
+    for (auto c : active_){
+    qreal current_y = c->y();
+    qreal current_x = c->x();
     qreal deltaX;
 
     deltaX = static_cast<qreal>(-STEP);  // RIGHT
     current_x += deltaX;
-    QRectF rect = scene_->sceneRect();
 
-    bool moveable = true;
+    if(current_x <= -20){
+        moveable = false;
+    }
 
     for (auto block : blocks_){
         qreal test_y = block->y();
@@ -158,7 +192,20 @@ void MainWindow::on_leftPushButton_clicked()
         }
     }
 
-    if(rect.contains(current_x, 4) && moveable) // HOW DO I FIX THIS PROPERLY DONT FORGET
-        circle_->moveBy(deltaX, 0);
-}
 
+    }
+
+    if (moveable){
+         for (auto c : active_){
+             qreal deltaX;
+
+             deltaX = static_cast<qreal>(-STEP);  // RIGHT
+              c->moveBy(deltaX, 0);
+         }
+    }
+
+}
+void MainWindow::on_pushButton_clicked()
+{
+    builder();
+}

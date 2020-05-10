@@ -86,14 +86,14 @@ void MainWindow::dropStuff()
             qreal test_x = block->x();
 
             if (test_y == current_y && test_x == current_x){
-                timer_.stop();
+                //timer_.stop();
                 valid = false;
 
             }
         }
 
     } else {
-        timer_.stop();
+        //timer_.stop();
         valid = false;
         }
     }
@@ -114,8 +114,15 @@ void MainWindow::dropStuff()
             blocks_.push_back(c);
             }
         active_.clear();
-        //builder();
 
+        if(winCheck()){
+            QMessageBox Msgbox;
+                Msgbox.setText("Game has bloody ended okay");
+                Msgbox.exec();
+        } else{
+
+            builder();
+        }
     }
 }
 
@@ -139,9 +146,21 @@ void MainWindow::builder()
 
         circle_ = scene_->addRect(0, 0, STEP, STEP, outline, fill);
 
-        circle_->moveBy(i*STEP+40 + x_off*STEP, 0 + y_off*STEP);
+        circle_->moveBy(i*STEP+ STEP*4 + x_off*STEP, y_off*STEP);
         active_.push_back(circle_);
     }
+
+}
+
+bool MainWindow::winCheck()
+{
+
+    for (auto block : blocks_){
+        if (block->y() == 0){
+            return true;
+        }
+    }
+    return false;
 
 }
 
@@ -192,7 +211,7 @@ void MainWindow::on_leftPushButton_clicked()
     qreal current_x = c->x();
     qreal deltaX;
 
-    deltaX = static_cast<qreal>(-STEP);  // RIGHT
+    deltaX = static_cast<qreal>(-STEP);  // LEFT
     current_x += deltaX;
 
     if(current_x <= -20){
@@ -214,7 +233,7 @@ void MainWindow::on_leftPushButton_clicked()
          for (auto c : active_){
              qreal deltaX;
 
-             deltaX = static_cast<qreal>(-STEP);  // RIGHT
+             deltaX = static_cast<qreal>(-STEP);  // LEFT
               c->moveBy(deltaX, 0);
          }
     }

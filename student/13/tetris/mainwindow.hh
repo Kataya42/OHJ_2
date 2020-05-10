@@ -10,7 +10,7 @@
 #include <QTimer>
 #include <QKeyEvent>
 #include <vector>
-#include <map>
+#include <QMessageBox>
 
 namespace Ui {
 class MainWindow;
@@ -113,6 +113,8 @@ private:
                        {  -1, 0, 0, -1 },
                                     };
 
+
+
     std::vector<Tetro_> noice_;
 
     // For randomly selecting the next dropping tetromino
@@ -123,6 +125,7 @@ private:
     std::vector<QGraphicsRectItem*> blocks_;
     std::vector<QGraphicsRectItem*> active_;
     void builder();
+    bool winCheck();
     // More constants, attibutes, and methods
 };
 

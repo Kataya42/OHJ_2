@@ -11,6 +11,7 @@
 #include <QKeyEvent>
 #include <vector>
 #include <QMessageBox>
+#include <QKeyEvent>
 
 namespace Ui {
 class MainWindow;
@@ -25,13 +26,8 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_dropButton_clicked();
 
-    void on_RightpushButton_clicked();
-
-    void on_leftPushButton_clicked();
-
-    void on_pushButton_clicked();
+    void on_startButton_clicked();
 
 private:
     Ui::MainWindow *ui;
@@ -39,9 +35,11 @@ private:
     QGraphicsScene* scene_;
     QGraphicsRectItem* circle_;
 
-    QGraphicsItem* why_;
+    //QGraphicsItem* why_;
     //QGraphicsEllipseItem* circle2_;
+
     QTimer timer_;
+    QTimer minTimer_;
 
     // Constants describing scene coordinates
     // Copied from moving circle example and modified a bit
@@ -78,7 +76,8 @@ private:
     // but most probably you need a constant value for NUMBER_OF_TETROMINOS.
 
     struct Tetro_{
-        QColor col;
+
+        QColor colour;
         std::vector<int> y_offset;
         std::vector<int> x_offset;
     };
@@ -98,34 +97,45 @@ private:
                        {  0, 0, 0, 0 },
                        {  0, 0, 0, -3 },
                        {  0, 0, 0, -1 },
-                       {  0, 0, -2, -2 },
+                       {  1, 0, 0, -1 },
                        {  0, 0, -1, -1 },
                        {  0, 0, 0, -2 },
                        {  0, 0, 0, -2},
                                     };
    std::vector<std::vector<int>> y_ = {
-                       {  0, 0, 0, 0 },
+                       {  -1, -1, -1, -1 },
                        {  0, 0, 0, -1 },
                        {  0, 0, 0, -1 },
-                       {  0, 0, -1, -1 },
+                       {  -1, 0, 0, -1 },
                        {  0, 0, -1, -1 },
                        {  0, 0, 0, -1 },
                        {  -1, 0, 0, -1 },
                                     };
 
+    std::vector<Tetro_> tetrominos_;
 
+    int sec_=0;
+    int min_=0;
+    int speed_ = 1000;
+    int score_ =0;
 
-    std::vector<Tetro_> noice_;
-
+    int current_;
     // For randomly selecting the next dropping tetromino
     std::default_random_engine randomEng;
     std::uniform_int_distribution<int> distr;
 
+    void keyPressEvent(QKeyEvent* event);
     void dropStuff();
     std::vector<QGraphicsRectItem*> blocks_;
     std::vector<QGraphicsRectItem*> active_;
+    void horizontalMovement(int dir);
     void builder();
-    bool winCheck();
+    bool isGameOver();
+    bool isValid(QGraphicsRectItem* block, int horizontal, int vertical);
+    void lineClear();
+    void rotate(int num);
+    void timeKeeping();
+    void scoreKeeping();
     // More constants, attibutes, and methods
 };
 

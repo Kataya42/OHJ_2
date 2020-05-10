@@ -48,6 +48,9 @@ MainWindow::MainWindow(QWidget *parent) :
     // After the above settings, you can use randomEng to draw the next falling
     // tetromino by calling: distr(randomEng) in a suitable method.
 
+    for (int i=0; i<NUMBER_OF_TETROMINOS; i++){
+        noice_.push_back({colours_[i], y_[i],x_[i] });
+    }
     // Add more initial settings and connect calls, when needed.
 }
 
@@ -111,20 +114,32 @@ void MainWindow::dropStuff()
             blocks_.push_back(c);
             }
         active_.clear();
-        builder();
+        //builder();
 
     }
 }
 
 void MainWindow::builder()
 {
-    QBrush redBrush(Qt::red);
-    QPen blackPen(Qt::black);
-    blackPen.setWidth(2);
+
+    int choice = distr(randomEng);
+
+    //std::string col = noice_[choice].colour;
+
+
+    QBrush fill(noice_.at(choice).col);
+    QPen outline(Qt::black);
+    outline.setWidth(2);
+
 
     for (int i=0; i<4; i++){
-        circle_ = scene_->addRect(0, 0, STEP, STEP, blackPen, redBrush);
-        circle_->moveBy(i*STEP+40, 0);
+
+        int x_off = noice_.at(choice).x_offset.at(i);
+        int y_off = noice_.at(choice).y_offset.at(i);
+
+        circle_ = scene_->addRect(0, 0, STEP, STEP, outline, fill);
+
+        circle_->moveBy(i*STEP+40 + x_off*STEP, 0 + y_off*STEP);
         active_.push_back(circle_);
     }
 

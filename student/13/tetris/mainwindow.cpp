@@ -136,6 +136,7 @@ void MainWindow::dropStuff()
             if(speed_ > 50){
                 speed_ -= 20;
             }
+            lineClear();
             timer_.setInterval(speed_);
             builder();
         }
@@ -145,7 +146,8 @@ void MainWindow::dropStuff()
 void MainWindow::builder()
 {
 
-    int choice = distr(randomEng);
+    //int choice = distr(randomEng);
+    int choice = 0;
 
     QBrush fill(tetrominos_.at(choice).colour);
     QPen outline(Qt::black);
@@ -202,9 +204,34 @@ bool MainWindow::isValid(QGraphicsRectItem* block, int horizontal, int vertical)
 
 void MainWindow::lineClear()
 {
-    for(auto block : blocks_){
+    std::vector<qreal> coords;
 
+    for(auto block : blocks_){
+        coords.push_back(block->y());
+        }
+
+    std::unordered_map<unsigned, size_t> counts;
+    for (auto v : coords)
+        ++counts[v];
+
+    for (auto const &p : counts){
+        if(p.second==12){
+
+            for (auto block : blocks_){
+                if(block->y()==p.first){
+                    scene_->removeItem(block);
+                    // fucking how do i delete memes
+
+                } else if (block->y()<p.first){
+                    block->moveBy(0,STEP);
+                }
+            }
+
+
+        }
     }
+
+    // count(coords.begin(), coords.end(), 3;
 }
 
 void MainWindow::rotate(int fallingBlock)

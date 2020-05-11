@@ -12,6 +12,8 @@
 #include <vector>
 #include <QMessageBox>
 #include <QKeyEvent>
+#include <algorithm>
+#include <unordered_map>
 
 namespace Ui {
 class MainWindow;

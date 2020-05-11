@@ -17,15 +17,7 @@
  * rotate a block, lines are not cleared. Game ends if a block reaches the top
  * row or a new block cannot be spawned.
  *
- * The tetrominoes are constructed by having 4 QGraphicsRectItems moving
- * at the same time and all movement is calculated for each individual square.
- * when they reach the bottom or another static block, they are moved outside
- * the users control and user will be given a new active set of squares.
- *
- * Finally, would like to point out the rotate method. I am aware its a mess.
- * It was a quick patch together and was going to add a datastructure
- * to store all moves and methods to process them and generally tidy
- * the thing up, but unfortunatly I ran out of time, so its left in its current state.
+ * More notes in instructions.txt file
  *
  * */
 

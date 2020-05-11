@@ -1,0 +1,56 @@
+How to play:
+
+Press "Start" to start the game 
+ 
+"A" key moves the tetromino to the left.
+"D" key moves the tetromino to the right.
+"S" key moves the tetromino instantly to the bottom.
+"W" key rotates the tetromino.
+
+All ui buttons are disabled while the game is active.
+The game ends when a a block reaches the top row or
+a new piece cannot be spawned. Once the game has ended, a pop window informs the user of this. After this buttons are 
+re-enabled. Pressing "Start" again starts a new game, pressing "Close" closes the program.
+
+You gain points by speeding up the descent of the block. Blocks cannot be rotated or moved outside the area or into each other. Each placed block speeds the game up slightly. 
+
+
+Extra features and their implementation:
+
+-All seven different tetrominos have been implemented.
+
+-A falling tetromino can be turned.
+	This happens by pressing the "W" key, it wont be pushed in any direction if movement 		is invalid, program will only prevent the action. It can be rotated "into" a spot.
+	most tetrominos have four different rotational positions but the "HORIZONTAL, 		STEP_UP_RIGHT and STEP_UP_LEFT" only have two.
+	There is no time limit on how many times you can turn a block or how frequently.
+
+-The time used in the game is counted
+	The time used so far is shown during the game and it 
+	is visible next to the "Start" button.
+	it shows how long a round has taken, and resets between attempts.
+
+-The game counts points based on blocks dropped fast
+	the longer distance you drop a block by pressing "S" the more points you get
+	and the more block you drop like this the more the score increases.
+	if you finish the game without fast dropping a single tetromino, you will have the
+	score of 0;
+
+-Tetrominos fall quicker when the game advances
+	Each tetromino what lands increases the game speed slighly up to a certain point.
+	it is indipendent on actual time, only amount of blocks dropped matter.
+
+-After the game ends it is possible to start the game again from the beginning without starting the program again.
+	Happens by pressing the start button once a game has ended.
+
+
+-The falling tetromino can be moved simultaneously as down as possible (with a button or a key command)
+	Happens using the "S" key, also what gives points in this game.
+
+
+
+
+
+
+
+
+

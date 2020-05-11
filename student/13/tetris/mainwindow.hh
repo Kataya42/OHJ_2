@@ -118,8 +118,9 @@ private:
     int min_=0;
     int speed_ = 1000;
     int score_ =0;
-
     int current_;
+    int rotation_ = 1;
+
     // For randomly selecting the next dropping tetromino
     std::default_random_engine randomEng;
     std::uniform_int_distribution<int> distr;

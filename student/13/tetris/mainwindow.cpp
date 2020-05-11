@@ -72,15 +72,26 @@ MainWindow::~MainWindow()
 void MainWindow::on_startButton_clicked()
 {
 
+    //scene_->clear();
+    for (auto c : blocks_){
+        scene_->removeItem(c);
+        }
+    blocks_.clear();
 
     ui->startButton->setEnabled(false);
     ui->ClosepushButton->setEnabled(false);
     //scene_->clear();
 
+    score_= 0;
+    min_=0;
+    sec_=0;
+    ui->lcdNumberScore->display(score_);
+    ui->lcdNumberSec->display(sec_);
+     ui->lcdNumberMin->display(min_);
 
     builder();
     minTimer_.start(speed_);
-    timer_.start(speed_);
+    timer_.start(1000);
 
 
     //dropStuff();
@@ -118,7 +129,8 @@ void MainWindow::dropStuff()
                 Msgbox.setText("Game has bloody ended okay");
                 Msgbox.exec();
                 ui->ClosepushButton->setEnabled(true);
-
+                ui->startButton->setEnabled(true);
+                speed_ = 1000;
 
         } else{
             if(speed_ > 50){
@@ -150,6 +162,7 @@ void MainWindow::builder()
 
         circle_->moveBy(i*STEP+ STEP*4 + x_off*STEP, STEP + y_off*STEP);
         active_.push_back(circle_);
+        rotation_ = 1;
     }
 
 }
@@ -189,24 +202,133 @@ bool MainWindow::isValid(QGraphicsRectItem* block, int horizontal, int vertical)
 
 void MainWindow::lineClear()
 {
-    //for(auto block : blocks_){
+    for(auto block : blocks_){
+
+    }
 }
 
 void MainWindow::rotate(int fallingBlock)
 {
     if (fallingBlock == HORIZONTAL){
+        if (rotation_== 1 && isValid(active_[0],STEP*2,-STEP*2)&& isValid(active_[1],STEP,-STEP)&& isValid(active_[3],-STEP,STEP)){
+            active_[0]->moveBy(STEP*2,-STEP*2);
+            active_[1]->moveBy(STEP,-STEP);
+
+            active_[3]->moveBy(-STEP,STEP);
+            rotation_++;
+
+        } else if(rotation_== 2 && isValid(active_[0],-2*STEP,2*STEP)&& isValid(active_[1],-STEP,STEP)&& isValid(active_[3],STEP,-STEP)){
+            active_[0]->moveBy(-2*STEP,2*STEP);
+            active_[1]->moveBy(-STEP,STEP);
+
+            active_[3]->moveBy(STEP,-STEP);
+            rotation_=1;
+        }
 
     } else if (fallingBlock == LEFT_CORNER){
 
+        if (rotation_== 1 && isValid(active_[0],STEP,-STEP)&& isValid(active_[2],-STEP,STEP)&& isValid(active_[3],STEP*2,0)){
+            active_[0]->moveBy(STEP,-STEP);
+            active_[2]->moveBy(-STEP,STEP);
+            active_[3]->moveBy(STEP*2,0);
+            rotation_++;
+
+        } else if(rotation_== 2 && isValid(active_[0],STEP,STEP)&& isValid(active_[2],-STEP,-STEP)&& isValid(active_[3],0,STEP*2)){
+            active_[0]->moveBy(STEP,STEP);
+            active_[2]->moveBy(-STEP,-STEP);
+            active_[3]->moveBy(0,STEP*2);
+            rotation_++;
+
+        } else if(rotation_== 3 && isValid(active_[0],-STEP,STEP)&& isValid(active_[2],STEP,-STEP)&& isValid(active_[3],-2*STEP,0)){
+            active_[0]->moveBy(-STEP,STEP);
+            active_[2]->moveBy(STEP,-STEP);
+            active_[3]->moveBy(-2*STEP,0);
+            rotation_++;
+
+        } else if(rotation_== 4 && isValid(active_[0],-STEP,-STEP)&& isValid(active_[2],STEP,STEP)&& isValid(active_[3],0,-2*STEP)){
+            active_[0]->moveBy(-STEP,-STEP);
+            active_[2]->moveBy(STEP,STEP);
+            active_[3]->moveBy(0,-2*STEP);
+            rotation_= 1;
+        }
+
     } else if (fallingBlock == RIGHT_CORNER){
 
-    } else if (fallingBlock == SQUARE){
+        if (rotation_== 1 && isValid(active_[0],STEP,-STEP)&& isValid(active_[2],-STEP,STEP)&& isValid(active_[3],0,STEP*2)){
+            active_[0]->moveBy(STEP,-STEP);
+            active_[2]->moveBy(-STEP,STEP);
+            active_[3]->moveBy(0,STEP*2);
+            rotation_++;
+
+        } else if(rotation_== 2 && isValid(active_[0],STEP,STEP)&& isValid(active_[2],-STEP,-STEP)&& isValid(active_[3],-STEP*2,0)){
+            active_[0]->moveBy(STEP,STEP);
+            active_[2]->moveBy(-STEP,-STEP);
+            active_[3]->moveBy(-STEP*2,0);
+            rotation_++;
+
+        } else if(rotation_== 3 && isValid(active_[0],-STEP,STEP)&& isValid(active_[2],STEP,-STEP)&& isValid(active_[3],0,-2*STEP)){
+            active_[0]->moveBy(-STEP,STEP);
+            active_[2]->moveBy(STEP,-STEP);
+            active_[3]->moveBy(0,-2*STEP);
+            rotation_++;
+
+        } else if(rotation_== 4 && isValid(active_[0],-STEP,-STEP)&& isValid(active_[2],STEP,STEP)&& isValid(active_[3],2*STEP,0)){
+            active_[0]->moveBy(-STEP,-STEP);
+            active_[2]->moveBy(STEP,STEP);
+            active_[3]->moveBy(2*STEP,0);
+            rotation_= 1;
+        }
 
     } else if (fallingBlock == STEP_UP_RIGHT){
 
+        if (rotation_== 1 && isValid(active_[2],-STEP,0)&& isValid(active_[3],-STEP,STEP*2)){
+            active_[2]->moveBy(-STEP,0);
+            active_[3]->moveBy(-STEP,STEP*2);
+            rotation_++;
+
+        } else if(rotation_== 2 && isValid(active_[2],STEP,0)&& isValid(active_[3],STEP,STEP*-2)){
+            active_[2]->moveBy(STEP,0);
+            active_[3]->moveBy(STEP,STEP*-2);
+            rotation_=1;
+        }
+
     } else if (fallingBlock == PYRAMID){
 
+        if (rotation_== 1 && isValid(active_[2],-STEP,STEP)){
+            active_[0]->moveBy(STEP,-STEP);
+            active_[3]->moveBy(STEP,STEP);
+            active_[2]->moveBy(-STEP,STEP);
+            rotation_++;
+
+        } else if(rotation_== 2 && isValid(active_[2],-STEP,-STEP)){
+            active_[0]->moveBy(STEP,STEP);
+            active_[3]->moveBy(-STEP,STEP);
+            active_[2]->moveBy(-STEP,-STEP);
+            rotation_++;
+        } else if(rotation_== 3 && isValid(active_[2],STEP,-STEP)){
+            active_[0]->moveBy(-STEP,STEP);
+            active_[3]->moveBy(-STEP,-STEP);
+            active_[2]->moveBy(STEP,-STEP);
+            rotation_++;
+        } else if(rotation_== 4 && isValid(active_[3],STEP,STEP)){
+            active_[0]->moveBy(-STEP,-STEP);
+            active_[3]->moveBy(STEP,-STEP);
+            active_[2]->moveBy(STEP,STEP);
+            rotation_=1;
+        }
+
     } else if (fallingBlock == STEP_UP_LEFT){
+
+        if (rotation_== 1 && isValid(active_[0],STEP,STEP*2)&& isValid(active_[3],STEP,0)){
+            active_[0]->moveBy(STEP,STEP*2);
+            active_[3]->moveBy(STEP,0);
+            rotation_++;
+
+        } else if(rotation_== 2 && isValid(active_[0],-STEP,-STEP*2)&& isValid(active_[3],-STEP,0)){
+            active_[0]->moveBy(-STEP,-STEP*2);
+            active_[3]->moveBy(-STEP,0);
+            rotation_=1;
+        }
 
     }
 }

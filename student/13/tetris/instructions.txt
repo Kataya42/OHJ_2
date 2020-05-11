@@ -4,7 +4,7 @@ Press "Start" to start the game
  
 "A" key moves the tetromino to the left.
 "D" key moves the tetromino to the right.
-"S" key moves the tetromino instantly to the bottom.
+"S" key moves the tetromino almost instantly to the bottom.
 "W" key rotates the tetromino.
 
 All ui buttons are disabled while the game is active.
@@ -20,8 +20,9 @@ Extra features and their implementation:
 -All seven different tetrominos have been implemented.
 
 -A falling tetromino can be turned.
-	This happens by pressing the "W" key, it wont be pushed in any direction if movement 		is invalid, program will only prevent the action. It can be rotated "into" a spot.
-	most tetrominos have four different rotational positions but the "HORIZONTAL, 		STEP_UP_RIGHT and STEP_UP_LEFT" only have two.
+	This happens by pressing the "W" key, it wont be pushed in any direction if movement is invalid, program will only 		prevent the action. It can be rotated "into" a spot.
+	most tetrominos have four different rotational positions but the "HORIZONTAL, 
+	STEP_UP_RIGHT and STEP_UP_LEFT" only have two.
 	There is no time limit on how many times you can turn a block or how frequently.
 
 -The time used in the game is counted
@@ -47,7 +48,28 @@ Extra features and their implementation:
 	Happens using the "S" key, also what gives points in this game.
 
 
+More documentation:
 
+ The tetrominoes are constructed by having 4 QGraphicsRectItems moving
+ at the same time and all movement is calculated for each individual square.
+ when they reach the bottom or another static block, they are moved outside
+ the users control and user will be given a new active set of squares.
+
+ The colours are consistent with each type of block. So a horizontal piece will always
+ be Cyan. They will also always spawn on the same spot, unsure on what "randomly" means in
+ given instructions but understood it as the actual tetromino should be random, not where it appears
+ or in what rotation.
+
+ Decided to disable close button even during the game, if accidentally user presses spacebar, then as
+ the only active button, it would close the program. This decision is made to prevent that.
+
+ Finally, would like to point out the rotate method. I am aware its a mess.
+ It was a quick patch together and was going to add a datastructure
+ to store all moves and methods to process them and generally tidy
+ the thing up, but unfortunatly I ran out of time, so its left in its current state.
+
+ I was going to add line clearing into the score counter, but after wasting hours, could
+ not get line clearing to work properly, so score counter only counts FAST dropped tiles.
 
 
 

@@ -14,6 +14,7 @@
 #include <QKeyEvent>
 #include <algorithm>
 #include <unordered_map>
+#include <map>
 
 namespace Ui {
 class MainWindow;
@@ -82,6 +83,7 @@ private:
         QColor colour;
         std::vector<int> y_offset;
         std::vector<int> x_offset;
+
     };
 
 
@@ -129,8 +131,8 @@ private:
 
     void keyPressEvent(QKeyEvent* event);
     void dropStuff();
-    std::vector<QGraphicsRectItem*> blocks_;
-    std::vector<QGraphicsRectItem*> active_;
+    QList<QGraphicsRectItem*> blocks_;
+    QList<QGraphicsRectItem*> active_;
     void horizontalMovement(int dir);
     void builder();
     bool isGameOver();

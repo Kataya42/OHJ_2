@@ -56,7 +56,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // tetromino by calling: distr(randomEng) in a suitable method.
 
     for (int i=0; i<NUMBER_OF_TETROMINOS; i++){
-        tetrominos_.push_back({colours_[i], y_[i],x_[i] });
+        tetrominos_.push_back({colours_[i], y_[i],x_[i]});
     }
 
 
@@ -117,7 +117,7 @@ void MainWindow::dropStuff()
         }
 
     } else {
-        for (auto c : active_){
+        for (auto &c : active_){
             blocks_.push_back(c);
             }
         active_.clear();
@@ -136,7 +136,7 @@ void MainWindow::dropStuff()
             if(speed_ > 50){
                 speed_ -= 20;
             }
-            lineClear();
+            //lineClear();
             timer_.setInterval(speed_);
             builder();
         }
@@ -146,8 +146,8 @@ void MainWindow::dropStuff()
 void MainWindow::builder()
 {
 
-    //int choice = distr(randomEng);
-    int choice = 0;
+    int choice = distr(randomEng);
+    //int choice = 0;
 
     QBrush fill(tetrominos_.at(choice).colour);
     QPen outline(Qt::black);
@@ -205,8 +205,9 @@ bool MainWindow::isValid(QGraphicsRectItem* block, int horizontal, int vertical)
 void MainWindow::lineClear()
 {
     std::vector<qreal> coords;
+    //std::vector<QGraphicsRectItem*> temp;
 
-    for(auto block : blocks_){
+    for(auto &block : blocks_){
         coords.push_back(block->y());
         }
 
@@ -217,30 +218,35 @@ void MainWindow::lineClear()
     for (auto const &p : counts){
         if(p.second==12){
 
-            for (auto block : blocks_){
-                if(block->y()==p.first){
-                    scene_->removeItem(block);
-                    // fucking how do i delete memes
+            for (auto &block : blocks_){
 
-                } else if (block->y()<p.first){
+                if(block->y()==p.first){
+
+                    scene_->removeItem(block);
+                    blocks_.removeOne(block);
+                    block = nullptr;
+                    }
+            }
+            for (auto &block : blocks_){
+
+                if (block->y()<p.first){
                     block->moveBy(0,STEP);
                 }
             }
 
-
         }
+
     }
 
-    // count(coords.begin(), coords.end(), 3;
 }
 
 void MainWindow::rotate(int fallingBlock)
 {
     if (fallingBlock == HORIZONTAL){
+
         if (rotation_== 1 && isValid(active_[0],STEP*2,-STEP*2)&& isValid(active_[1],STEP,-STEP)&& isValid(active_[3],-STEP,STEP)){
             active_[0]->moveBy(STEP*2,-STEP*2);
             active_[1]->moveBy(STEP,-STEP);
-
             active_[3]->moveBy(-STEP,STEP);
             rotation_++;
 
